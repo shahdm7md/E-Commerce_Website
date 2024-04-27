@@ -1,0 +1,22 @@
+﻿@model testtt.Models.ViewsModels.ProductViewModel
+
+@{
+    ViewData["Title"] = "Add Product";
+}
+
+<h2>Add Product</h2>
+
+<hr />
+
+<section class="row">
+    <div class="col-md-4">
+        <form method="POST" asp-action="Add_Product">
+
+            <div class="form-group">
+                <label class="text-muted" asp-for="Prod_Name"></label>
+                <input type="text" class="form-control" asp-for="Prod_Name" maxlength="100" />
+                <span asp-validation-for="Prod_Name" class="text-danger"></span>
+            </div>
+        </form>
+    </div>
+</section>

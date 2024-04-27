@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - testtt</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	<link href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/testtt.styles.css" asp-append-version="true" />
 </head>
@@ -24,13 +25,14 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark"  asp-controller="Product" asp-action="index">Product</a>
                         </li>
-                     
-                        
-                            <li class="nav-item">
-                                <a class="nav-link text-dark"  asp-controller="Roles" asp-action="index">Manage Roles</a>
-                            </li>
+                        <li class="nav-item">
+                             <a class="nav-link text-dark"  asp-controller="Roles" asp-action="index">Manage Roles</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Users" asp-action="Index">Manage Users</a>
+                        </li>
                         
                     </ul>
                     <partial name="_LoginPartial" />

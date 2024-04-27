@@ -1,0 +1,31 @@
+﻿@model IEnumerable<Product>
+@{
+	ViewData["Title"] = "Product";
+}
+<h2>
+	Products
+</h2>
+<hr/>
+
+<a class="btn btn-primary" asp-action="Add_Product">
+    <i class="bi bi-plus-square-dotted"></i>
+	</>Add Product
+</a>
+<div class="mt-4">
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning" role="alert">
+        <i class="bi bi-exclamation-triangle"></i>
+            No Products found!
+        </div>
+    }
+    else
+    {
+        <ul>
+            @foreach(var product in Model)
+            {
+                <li>@product.Prod_Name</li>
+            }
+        </ul>
+    }
+</div>
