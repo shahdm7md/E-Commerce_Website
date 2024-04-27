@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
@@ -131,12 +132,14 @@ namespace testtt.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
+                
                 var user = new Customer
-                {
+                {     
+                    UserName = new MailAddress(Input.Email).User,
                     Email = Input.Email,
                     Cus_FName = Input.FirstName,
                     Cus_LName = Input.LastName,
-                    Cus_address = Input.Address
+                    Cus_address = Input.Address,
                 };
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);

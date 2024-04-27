@@ -26,6 +26,10 @@
             <label asp-for="Input.Address" class="form-label"></label>
         </div>
             @* <div class="form-floating">
+                <input asp-for="Input.Cus_ImageUrl" class="form-control" type="file" name="img_file" />
+                <label asp-for="Input.Cus_ImageUrl" class="form-label"></label>
+            </div> *@
+            @* <div class="form-floating">
                 <input asp-for="Input.PhoneNumber" class="form-control" />
                 <label asp-for="Input.PhoneNumber" class="form-label"></label>
                 <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
@@ -36,24 +40,24 @@
     <div class="col-md-6">
         <div class="form-floating">
 
-            <label asp-for="Input.Prod_ImageUrl" class="w-100"></label>
-                @if (Model.Input.Prod_ImageUrl != null)
+            <label asp-for="Input.Cus_ImageUrl" class="w-100"></label>
+                @if (Model.Input.Cus_ImageUrl != null)
                 {
-                <img id="profilepicture" alt="Profile" src="@Model.Input.Prod_ImageUrl" />
+                    <img id="profilepicture" alt="" src="@Url.Content($"~/images/{Model.Input.Cus_ImageUrl}")"  style="border-radius:50%; width:70px;height:70px" />
                 }
                 else
                 {
-                <img id="profilepicture" alt="Profile" src="~/images/defult_image.jpg" />
+                <img id="profilepicture" alt="" src="~/images/defult_image.jpg" />
                 }
             <div class="custom-file mt-2">
                 <input type="file"
                        accept="image/*"
-                       asp-for="Input.Prod_ImageUrl"
+                       asp-for="Input.Cus_ImageUrl"
                        class="custome-file-input"
                        onchange="document.getElementById('profilepicture').src=window.URL.createObjectURL(this.files[0])" />
 
-                <label class="custom-file-label" asp-for="Input.Prod_ImageUrl">Choose picture...</label>
-                <span asp-validation-for="Input.Prod_ImageUrl" class="text-danger"></span>
+                <label class="custom-file-label" asp-for="Input.Cus_ImageUrl">Choose picture...</label>
+                <span asp-validation-for="Input.Cus_ImageUrl" class="text-danger"></span>
             </div>
         </div>
     </div>

@@ -26,10 +26,8 @@ namespace testtt.Models
         [RegularExpression(@"^[A-Za-z0-9\s\,\.\-]+$", ErrorMessage = "Invalid address format.")]
         public string Cus_address { get; set; }
 
-        // Navigation property for Orders
-        // public byte[]? ProfilePicture { get; set; }
-        [RegularExpression(@"^(https?|ftp):\/\/[^\s\/$.?#].[^\s]*$", ErrorMessage = "Invalid URL.")]
-        public string? Prod_ImageUrl { get; set; }
+		// Navigation property for Orders
+		public string? Cus_ImageUrl { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
         
     }

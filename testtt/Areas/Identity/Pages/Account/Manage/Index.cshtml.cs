@@ -4,11 +4,14 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using testtt.Models;
 
 namespace testtt.Areas.Identity.Pages.Account.Manage
@@ -16,14 +19,16 @@ namespace testtt.Areas.Identity.Pages.Account.Manage
     public class IndexModel : PageModel
     {
         private readonly UserManager<Customer> _userManager;
-        private readonly SignInManager<Customer> _signInManager;
+        private readonly SignInManager<Customer> _signInManager; 
+        private readonly IWebHostEnvironment _Environment;
 
         public IndexModel(
             UserManager<Customer> userManager,
-            SignInManager<Customer> signInManager)
+            SignInManager<Customer> signInManager, IWebHostEnvironment Environment)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _Environment = Environment;
         }
 
         /// <summary>
@@ -69,9 +74,9 @@ namespace testtt.Areas.Identity.Pages.Account.Manage
             //[Phone]
             //[Display(Name = "Phone number")]
             //public string PhoneNumber { get; set; }
-            [RegularExpression(@"^(https?|ftp):\/\/[^\s\/$.?#].[^\s]*$", ErrorMessage = "Invalid URL.")]
-            [Display(Name = "Profile Picture")]
-            public string? Prod_ImageUrl { get; set; }
+            //[RegularExpression(@"^(https?|ftp):\/\/[^\s\/$.?#].[^\s]*$", ErrorMessage = "Invalid URL.")]
+            [Display(Name = "")]
+            public string? Cus_ImageUrl { get; set; }
 
             [Required(ErrorMessage = "Address is required.")]
             [RegularExpression(@"^[A-Za-z0-9\s\,\.\-]+$", ErrorMessage = "Invalid address format.")]
@@ -89,7 +94,8 @@ namespace testtt.Areas.Identity.Pages.Account.Manage
             {
                 FirstName = user.Cus_FName,
                 LastName = user.Cus_LName,
-                Prod_ImageUrl = user.Prod_ImageUrl
+                Address=user.Cus_address,
+                Cus_ImageUrl = user.Cus_ImageUrl
                 //PhoneNumber = phoneNumber
             };
         }
@@ -106,7 +112,7 @@ namespace testtt.Areas.Identity.Pages.Account.Manage
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(IFormFile img_file)
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
@@ -152,27 +158,95 @@ namespace testtt.Areas.Identity.Pages.Account.Manage
 
             }
 
-            if (Request.Form.Files.Count > 0)
-            {
 
-                var file = Request.Form.Files.FirstOrDefault();
+			//        if (Request.Form.Files.Count > 0)
+			//        {
 
-                // Generate a unique filename or use the original filename
-                var fileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+			//string path = Path.Combine(_Environment.WebRootPath, "images"); // wwwroot/Img/
+			//            if (!Directory.Exists(path))
+			//            {
+			//                Directory.CreateDirectory(path);
+			//            }
+			//            if (img_file != null)
+			//            {
+			//	var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+			//	var fileExtension = Path.GetExtension(img_file.FileName).ToLower();
+			//	if (!allowedExtensions.Contains(fileExtension))
+			//	{
+			//		ModelState.AddModelError("ProfilePicture", "Invalid file type. Only JPG, JPEG, PNG, and GIF files are allowed.");
+			//		//return View(model);
+			//	}
+			//	else
+			//	{
+			//		// Handle case when no file is uploaded
+			//		// For example, return a BadRequest or display an error message
+			//		return BadRequest("No file uploaded.");
+			//	}
 
-                // Save the image to the wwwroot/images folder or any other desired location
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", fileName);
+			//	path = Path.Combine(path, img_file.FileName); // for exmple : /Img/Photoname.png
+			//                using (var stream = new FileStream(path, FileMode.Create))
+			//                {
+			//                    await img_file.CopyToAsync(stream);
+			//                    user.Cus_ImageUrl = img_file.FileName;
+			//                }
+			//            }
+			//            else
+			//            {
+			//                user.Cus_ImageUrl = "defult_image.jpg"; // to save the default image path in database.
+			//            }
 
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await file.CopyToAsync(stream);
-                }
+			//                //_context.Add(department);
+			//                //_context.SaveChanges();
+			//                //return RedirectToAction("Index");
+			//                await _userManager.UpdateAsync(user);
 
-                user.Prod_ImageUrl = "/images/" + fileName; // Save the path in the database
-                await _userManager.UpdateAsync(user);
-            }
 
-            await _signInManager.RefreshSignInAsync(user);
+			//            //return View(department);
+			//        }
+			if (Request.Form.Files.Count > 0)
+			{
+				string path = Path.Combine(_Environment.WebRootPath, "images"); // wwwroot/Img/
+				if (!Directory.Exists(path))
+				{
+					Directory.CreateDirectory(path);
+				}
+
+				img_file = Request.Form.Files.FirstOrDefault(); // Get the first uploaded file
+
+				if (img_file != null)
+				{
+					var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+					var fileExtension = Path.GetExtension(img_file.FileName)?.ToLower();
+
+					if (!allowedExtensions.Contains(fileExtension))
+					{
+						ModelState.AddModelError("ProfilePicture", "Invalid file type. Only JPG, JPEG, PNG, and GIF files are allowed.");
+						return BadRequest(ModelState);
+					}
+
+					path = Path.Combine(path, img_file.FileName); // For example: /Img/Photoname.png
+
+					using (var stream = new FileStream(path, FileMode.Create))
+					{
+						await img_file.CopyToAsync(stream);
+						user.Cus_ImageUrl = Path.GetFileName(path); // Save only the file name in the database
+					}
+				}
+				else
+				{
+					user.Cus_ImageUrl = "default_image.jpg"; // Save the default image path in the database
+				}
+
+				await _userManager.UpdateAsync(user);
+			}
+
+			// Return an appropriate response, depending on the context of your application
+			//return Ok(); // Or any other appropriate response
+
+
+
+
+			await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();
         }

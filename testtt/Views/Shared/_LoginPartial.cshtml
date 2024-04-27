@@ -3,12 +3,15 @@
 @inject UserManager<Customer> UserManager
 
 <ul class="navbar-nav">
+    @{
+        var userImageUrl = UserManager.GetUserAsync(User).Result.Cus_ImageUrl;
+    }
 @if (SignInManager.IsSignedIn(User))
 {
-        @if (UserManager.GetUserAsync(User).Result.Prod_ImageUrl != null)
+        @if (userImageUrl != null)
         {
             <li class="nav-item">
-                <img class="avatar rounded-circle" alt="profile" src="data:image/* @(UserManager.GetUserAsync(User).Result.Prod_ImageUrl)" />
+                <img class="avatar rounded-circle" alt=" " src="@Url.Content(userImageUrl)" style="border-radius: 50%; width: 70px; height: 70px;" />
             </li>
         }
     <li class="nav-item">
