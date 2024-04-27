@@ -8,7 +8,7 @@ namespace testtt.Data.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-
+            //user
             migrationBuilder.InsertData(
                   table: "Roles",
                   columns: new[] { "Id", "Name", "NormalizedName", "ConcurrencyStamp" },
@@ -16,6 +16,7 @@ namespace testtt.Data.Migrations
                   schema: "security"
               );
 
+            //admin
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "Name", "NormalizedName", "ConcurrencyStamp" },
