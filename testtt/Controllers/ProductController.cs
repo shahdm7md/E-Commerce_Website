@@ -19,6 +19,7 @@ namespace testtt.Controllers
             var products = await _context.Products.ToListAsync();
             return View(products);
         }
+
         public async Task<IActionResult> Add_Product()
         {
             var viewModel = new ProductViewModel

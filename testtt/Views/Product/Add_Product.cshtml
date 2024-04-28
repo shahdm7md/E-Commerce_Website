@@ -8,7 +8,7 @@
 
 <hr />
 
-<section class="row">
+<section class="row justify-content-between">
     <div class="col-md-4">
         <form method="POST" asp-action="Add_Product">
 
@@ -35,6 +35,43 @@
                 <textarea class="form-control" asp-for="Prod_Description" maxlength="2500" rows="5"></textarea>
                 <span asp-validation-for="Prod_Description" class="text-danger"></span>
             </div>
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" asp-for="Prod_Image" accept="image/*" />
+                <label class="custom-file-label" asp-for="Prod_Image"></label>
+                <span asp-validation-for="Prod_Image" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary mt-4">
+                <i class="bi bi-check"></i>
+                Save
+            </button>
+            <a asp-action="Index" class="btn btn-outline-secondary mt-4">
+                <i class="bi bi-x"></i>
+                Cancel
+            </a>
         </form>
     </div>
+    <div class="col-md-4">
+        <div id="poster-container" class="d-none">
+            <img src=" " alt="Prod_Image" class="img-thumbnail" />
+        </div>
 </section>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+            $('#Prod_Image').on('change', function () {
+                var selectedFile = $(this).val().split('\\').pop();
+                $(this).siblings('label').text(selectedFile);
+
+                var posterContainer = $('#poster-container');
+                var image = window.URL.createObjectURL(this.files[0]);
+
+                posterContainer.removeClass('d-none');
+                posterContainer.find('img').attr('src', image);
+            });
+
+        });
+    </script>
+}
