@@ -25,6 +25,8 @@ namespace testtt.Models.ViewsModels
         public int Prod_Stock { get; set; }
 
         [Display (Name ="Product Picture")]
-        public string Prod_ImageUrl { get; set; }
+        [Required(ErrorMessage = "Prod_Image is required.")]
+        public byte[] Prod_Image { get; set; }
+        //public byte[] Prod_ImageUrl { get; set; }
     }
 }
