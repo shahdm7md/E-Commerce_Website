@@ -12,6 +12,7 @@ namespace testtt.Models
 
         [Required(ErrorMessage = "Name is required.")]
         [StringLength(100, ErrorMessage = "Name cannot be longer than 100 characters.")]
+        [RegularExpression(@"^[A-Za-z]+$", ErrorMessage = "Name must contain only letters.")]
         public string Prod_Name { get; set; }
 
         [Required(ErrorMessage = "Description is required.")]

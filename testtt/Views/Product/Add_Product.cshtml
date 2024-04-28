@@ -4,14 +4,14 @@
     ViewData["Title"] = "Add Product";
 }
 
-<h2>Add Product</h2>
+<h2>@(Model.Id > 0 ? "Edit" : "Add") Product</h2>
 
 <hr />
 
 <section class="row justify-content-between">
     <div class="col-md-4">
-        <form method="POST" asp-action="Add_Product">
-
+        <form method="POST" asp-action="@(Model.Id > 0 ? "Edit" : "Add")" enctype="multipart/form-data">
+            <input type="hidden" asp-for="Id" />
             <div class="form-group w-50">
                 <label class="text-muted" asp-for="Prod_Name"></label>
                 <input type="text" class="form-control" asp-for="Prod_Name" maxlength="100" />
@@ -20,13 +20,13 @@
 
             <div class="form-group w-50">
                 <label class="text-muted" asp-for="Prod_Price"></label>
-                <input type="number" class="form-control" asp-for="Prod_Price" />
+                <input type="number" class="form-control" asp-for="Prod_Price"  />
                 <span asp-validation-for="Prod_Price" class="text-danger"></span>
             </div>
 
             <div class="form-group w-50">
                 <label class="text-muted" asp-for="Prod_Stock"></label>
-                <input type="number" class="form-control" asp-for="Prod_Stock" />
+                <input type="number" class="form-control" asp-for="Prod_Stock"  />
                 <span asp-validation-for="Prod_Stock" class="text-danger"></span>
             </div>
 
@@ -51,8 +51,8 @@
         </form>
     </div>
     <div class="col-md-4">
-        <div id="poster-container" class="d-none">
-            <img src=" " alt="Prod_Image" class="img-thumbnail" />
+        <div id="poster-container" class="@(Model.Id > 0 ? string.Empty : "d-none")">
+            <img src=" @(Model.Id > 0 ? $"data:image/*;base64,{Convert.ToBase64String(Model.Prod_Image)}" : string.Empty)" alt="Prod_Image" class="img-thumbnail" />
         </div>
 </section>
 @section Scripts {
