@@ -24,7 +24,41 @@
         <ul>
             @foreach(var product in Model)
             {
-                <li>@product.Prod_Name</li>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card mb-3">
+                            <div class="row no-gutters">
+                                 <div class="col-md-2 prodimage" style="background-image: url(data:image\/*;base64,@(Convert.ToBase64String(product.Prod_Image)))"></div>
+                                <div class="col-md-10">
+                                    <div class="card-body d-flex flex-column justify-content-between h-100">
+                                        <div>
+                                            <h3 class="card-title">@product.Prod_Name </h3>
+                                            <h6>Price = @product.Prod_Price $ </h6>
+                                              <h6>Stock = (@product.Prod_Stock) </h6>
+                                            <p class="card-text text-justify">@(product.Prod_Description.Length > 500 ? $"{product.Prod_Description.Substring(0, 500)}..." : product.Prod_Description)</p>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <a asp-action="Details" asp-route-id="@product.Prod_ID" class="btn btn-outline-secondary">
+                                                    <i class="bi bi-ticket-detailed"></i>
+                                                    Details
+                                                </a>
+                                                <a asp-action="Edit" asp-route-id="@product.Prod_ID" class="btn btn-outline-primary">
+                                                    <i class="bi bi-pencil"></i>
+                                                    Edit
+                                                </a>
+                                                <a href="javascript:;" class="btn btn-danger js-delete" data-id="@product.Prod_ID">
+                                                    <i class="bi bi-trash"></i>
+                                                    Delete
+                                                </a>
+                                             </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
             }
         </ul>
     }
