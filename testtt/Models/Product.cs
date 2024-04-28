@@ -1,10 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace testtt.Models
 {
     public class Product
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column(Order = 1)]
         public int Prod_ID { get; set; }
 
         [Required(ErrorMessage = "Name is required.")]
@@ -22,7 +25,7 @@ namespace testtt.Models
         [Range(0, int.MaxValue, ErrorMessage = "Stock must be greater than or equal to 0.")]
         public int Prod_Stock { get; set; }
 
-        [RegularExpression(@"^(https?|ftp):\/\/[^\s\/$.?#].[^\s]*$", ErrorMessage = "Invalid URL.")]
+        //[RegularExpression(@"^(https?|ftp):\/\/[^\s\/$.?#].[^\s]*$", ErrorMessage = "Invalid URL.")]
         public string Prod_ImageUrl { get; set; }
 
         // Navigation property for OrderDetails

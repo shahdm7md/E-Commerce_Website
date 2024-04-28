@@ -23,7 +23,7 @@ namespace testtt.Models
         //public string Cus_Email { get; set; }
 
         [Required(ErrorMessage = "Address is required.")]
-        [RegularExpression(@"^[A-Za-z0-9\s\,\.\-]+$", ErrorMessage = "Invalid address format.")]
+        [RegularExpression(@"^(?=.*[a-zA-Z])[a-zA-Z0-9\s.,#-]+$", ErrorMessage = "Invalid address format.")]
         public string Cus_address { get; set; }
 
 		// Navigation property for Orders

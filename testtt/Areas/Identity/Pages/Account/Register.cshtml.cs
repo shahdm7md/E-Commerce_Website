@@ -114,7 +114,8 @@ namespace testtt.Areas.Identity.Pages.Account
             public string LastName { get; set; }
 
             [Required(ErrorMessage = "Address is required.")]
-            [RegularExpression(@"^[A-Za-z0-9\s\,\.\-]+$", ErrorMessage = "Invalid address format.")]
+            //[RegularExpression(@"^[A-Za-z0-9\s\,\.\-]+$", ErrorMessage = "Invalid address format.")]
+            [RegularExpression(@"^(?=.*[a-zA-Z])[a-zA-Z0-9\s.,#-]+$", ErrorMessage = "Invalid address format.")]
             [Display(Name = "Address")]
             public string Address { get; set; }
         }
@@ -149,6 +150,8 @@ namespace testtt.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+
+                    await _userManager.AddToRoleAsync(user, "User"); //add role user
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

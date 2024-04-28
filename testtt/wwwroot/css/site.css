@@ -22,3 +22,47 @@ body {
     width: 40px;
     object-fit: cover;
 }
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px; /* Vertically center the text there */
+}
+
+textarea {
+    resize: none;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.field-validation-error {
+    font-size: 14px;
+}
+
+.poster {
+    min-height: 236px;
+    background-position: center;
+    background-size: 100%;
+    transition: all 0.3s ease-in-out;
+}
+
+    .poster:hover {
+        background-size: 125%;
+        transition: all 0.3s ease-in-out;
+    }
+
+.mt-60-px {
+    margin-top: 60px;
+}

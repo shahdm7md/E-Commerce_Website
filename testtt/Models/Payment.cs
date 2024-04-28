@@ -6,6 +6,8 @@ namespace testtt.Models
     public class Payment
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column(Order = 1)]
         public int Pay_ID { get; set; }
 
         [Required(ErrorMessage = "Method is required.")]
