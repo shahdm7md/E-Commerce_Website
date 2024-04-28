@@ -6,6 +6,8 @@ namespace testtt.Models
     public class OrderDetail
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column(Order = 1)]
         public int Order_Details_ID { get; set; }
 
         [Required(ErrorMessage = "Quantity is required.")]

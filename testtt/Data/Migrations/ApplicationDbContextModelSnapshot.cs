@@ -159,7 +159,8 @@ namespace testtt.Data.Migrations
                 {
                     b.Property<int>("Cart_ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Cart_ID"), 1L, 1);
 
@@ -178,7 +179,8 @@ namespace testtt.Data.Migrations
                 {
                     b.Property<int>("CartItem_ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartItem_ID"), 1L, 1);
 
@@ -298,7 +300,8 @@ namespace testtt.Data.Migrations
                 {
                     b.Property<int>("Order_ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Order_ID"), 1L, 1);
 
@@ -334,7 +337,8 @@ namespace testtt.Data.Migrations
                 {
                     b.Property<int>("Order_Details_ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Order_Details_ID"), 1L, 1);
 
@@ -372,7 +376,8 @@ namespace testtt.Data.Migrations
                 {
                     b.Property<int>("Pay_ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Pay_ID"), 1L, 1);
 
@@ -401,7 +406,8 @@ namespace testtt.Data.Migrations
                 {
                     b.Property<int>("Prod_ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Prod_ID"), 1L, 1);
 

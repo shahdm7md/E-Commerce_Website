@@ -6,6 +6,8 @@ namespace testtt.Models
     public class Cart
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column(Order = 1)]
         public int Cart_ID { get; set; }
 
         [ForeignKey("Customer")]

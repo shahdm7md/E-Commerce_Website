@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Product>
+﻿@model IEnumerable<Product>   //list of products
 @{
 	ViewData["Title"] = "Product";
 }
@@ -12,7 +12,7 @@
 	</>Add Product
 </a>
 <div class="mt-4">
-    @if (!Model.Any())
+    @if (!Model.Any())  //not found products
     {
         <div class="alert alert-warning" role="alert">
         <i class="bi bi-exclamation-triangle"></i>

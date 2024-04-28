@@ -25,7 +25,6 @@ namespace testtt.Models.ViewsModels
         public int Prod_Stock { get; set; }
 
         [Display (Name ="Product Picture")]
-        [RegularExpression(@"^(https?|ftp):\/\/[^\s\/$.?#].[^\s]*$", ErrorMessage = "Invalid URL.")]
         public string Prod_ImageUrl { get; set; }
     }
 }

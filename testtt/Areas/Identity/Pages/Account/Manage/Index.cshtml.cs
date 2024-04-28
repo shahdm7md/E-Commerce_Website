@@ -79,7 +79,7 @@ namespace testtt.Areas.Identity.Pages.Account.Manage
             public string? Cus_ImageUrl { get; set; }
 
             [Required(ErrorMessage = "Address is required.")]
-            [RegularExpression(@"^[A-Za-z0-9\s\,\.\-]+$", ErrorMessage = "Invalid address format.")]
+            [RegularExpression(@"^(?=.*[a-zA-Z])[a-zA-Z0-9\s.,#-]+$", ErrorMessage = "Invalid address format.")]
             public string Address { get; set; }
         }
 
@@ -239,10 +239,6 @@ namespace testtt.Areas.Identity.Pages.Account.Manage
 
 				await _userManager.UpdateAsync(user);
 			}
-
-			// Return an appropriate response, depending on the context of your application
-			//return Ok(); // Or any other appropriate response
-
 
 
 

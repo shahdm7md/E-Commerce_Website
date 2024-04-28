@@ -6,6 +6,8 @@ namespace testtt.Models
     public class Order
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column(Order = 1)]
         public int Order_ID { get; set; }
 
         [Required(ErrorMessage = "Order date is required.")]
