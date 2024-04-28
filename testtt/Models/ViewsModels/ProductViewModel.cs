@@ -1,12 +1,19 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 //using System.Collections.Generic;
 
 namespace testtt.Models.ViewsModels
 {
     public class ProductViewModel
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column(Order = 1)]
+        public int Id { get; set; }
+
         [Display(Name = "Product Name")]
         [Required(ErrorMessage = "Name is required.")]
+        [RegularExpression(@"^[A-Za-z]+$", ErrorMessage = "Name must contain only letters.")]
         [StringLength(100, ErrorMessage = "Name cannot be longer than 100 characters.")]
         public string Prod_Name { get; set; }
 
@@ -24,7 +31,7 @@ namespace testtt.Models.ViewsModels
         [Range(0, int.MaxValue, ErrorMessage = "Stock must be greater than or equal to 0.")]
         public int Prod_Stock { get; set; }
 
-        [Display (Name ="Product Picture")]
+        [Display (Name ="Select Product Picture...")]
         [Required(ErrorMessage = "Prod_Image is required.")]
         public byte[] Prod_Image { get; set; }
         //public byte[] Prod_ImageUrl { get; set; }
