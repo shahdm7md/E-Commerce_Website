@@ -72,7 +72,7 @@ a {
 
 .custom-navbar .custom-navbar-nav li a {
     font-weight: 500;
-    color: #ffffff !important;
+    color: #3b5d50 !important;
     opacity: .5;
     -webkit-transition: .3s all ease;
     -o-transition: .3s all ease;
@@ -87,7 +87,7 @@ a {
         bottom: 0;
         left: 8px;
         right: 8px;
-        background: #f9bf29;
+        background: #3b5d50;
         height: 5px;
         opacity: 1;
         visibility: visible;
@@ -167,7 +167,7 @@ a {
 
 .hero h1 {
     font-weight: 700;
-    color: #ffffff;
+    color: #3b5d50;
     margin-bottom: 30px;
 }
 
