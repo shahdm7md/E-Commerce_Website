@@ -5,6 +5,8 @@ using Microsoft.Extensions.Options;
 using testtt.Data;
 using testtt.Models;
 using NToastNotify;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using testtt.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +17,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddIdentity<Customer, IdentityRole>(Options=> Options.SignIn.RequireConfirmedAccount=true)
+builder.Services.AddIdentity<Customer, IdentityRole>()  //Options=> Options.SignIn.RequireConfirmedAccount=true
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultUI()
     .AddDefaultTokenProviders();
@@ -35,6 +37,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(Options =>
 //    PreventDuplicates = true,
 //    CloseButton = true
 //});
+//builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 var app = builder.Build();
 

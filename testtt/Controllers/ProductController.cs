@@ -8,7 +8,7 @@ using testtt.Models.ViewsModels;
 
 namespace testtt.Controllers
 {
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public class ProductController : Controller
     {
         private readonly ApplicationDbContext _context;

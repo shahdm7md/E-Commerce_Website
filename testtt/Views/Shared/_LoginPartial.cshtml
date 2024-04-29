@@ -6,7 +6,7 @@
    
 @if (SignInManager.IsSignedIn(User))
 {
-        var userImageUrl = UserManager.GetUserAsync(User).Result.Cus_ImageUrl;
+        @* var userImageUrl = UserManager.GetUserAsync(User).Result.Cus_ImageUrl;
       
         @if (userImageUrl != null)
         {
@@ -14,7 +14,7 @@
             <li class="nav-item">
                 <img class="avatar rounded-circle" alt=" " src="@Url.Content(userImageUrl)" style="border-radius: 50%; width: 70px; height: 70px;" />
             </li>
-        }
+        } *@
     <li class="nav-item">
         <a  class="nav-link " asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name ! </a>
     </li>

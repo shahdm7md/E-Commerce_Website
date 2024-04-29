@@ -1021,3 +1021,19 @@ textarea {
         border-radius: 50%;
         background: rgba(59, 93, 80, 0.2);
     }
+
+/* Add this CSS to your existing styles or create a new CSS file */
+
+/* Target the body element when the login layout is active */
+body.login-layout {
+    background-color: #fff; /* Change the background color to white */
+}
+
+/* Target specific elements within the login page */
+.login-page h1 {
+    color: #333; /* Change the color of the heading */
+}
+
+.login-page .container {
+    padding-top: 50px; /* Adjust the padding on the top */
+}
