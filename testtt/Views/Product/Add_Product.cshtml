@@ -1,16 +1,16 @@
 ﻿@model testtt.Models.ViewsModels.ProductViewModel
 
 @{
-    ViewData["Title"] = "Add Product";
+    ViewData["Title"] = "Add_Product";
 }
 
-<h2>@(Model.Id > 0 ? "Edit" : "Add") Product</h2>
+<h2>@(Model.Id > 0 ? "Edit" : "Add_Product") Product</h2>
 
 <hr />
 
 <section class="row justify-content-between">
     <div class="col-md-4">
-        <form method="POST" asp-action="@(Model.Id > 0 ? "Edit" : "Add")" enctype="multipart/form-data">
+        <form method="POST" asp-action="@(Model.Id > 0 ? "Edit" : "Add_Product")" enctype="multipart/form-data">
             <input type="hidden" asp-for="Id" />
             <div class="form-group w-50">
                 <label class="text-muted" asp-for="Prod_Name"></label>
@@ -18,15 +18,15 @@
                 <span asp-validation-for="Prod_Name" class="text-danger"></span>
             </div>
 
-            <div class="form-group w-50">
+            <div class="form-group w-25">
                 <label class="text-muted" asp-for="Prod_Price"></label>
-                <input type="number" class="form-control" asp-for="Prod_Price"  />
+                <input type="number" class="form-control" asp-for="Prod_Price" value="@(Model.Prod_Price > 0 ? Model.Prod_Price : string.Empty)" />
                 <span asp-validation-for="Prod_Price" class="text-danger"></span>
             </div>
 
-            <div class="form-group w-50">
+            <div class="form-group w-25">
                 <label class="text-muted" asp-for="Prod_Stock"></label>
-                <input type="number" class="form-control" asp-for="Prod_Stock"  />
+                <input type="number" class="form-control" asp-for="Prod_Stock" value="@(Model.Prod_Stock > 0 ? Model.Prod_Stock : string.Empty)" />
                 <span asp-validation-for="Prod_Stock" class="text-danger"></span>
             </div>
 
@@ -56,9 +56,7 @@
         </div>
 </section>
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
     <script>
         $(document).ready(function () {
             $('#Prod_Image').on('change', function () {
