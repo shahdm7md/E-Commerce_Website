@@ -17,11 +17,11 @@ namespace testtt.Models.ViewsModels
         [StringLength(100, ErrorMessage = "Name cannot be longer than 100 characters.")]
         public string Prod_Name { get; set; }
 
-        [Display(Name = "Product Description")]
+        [Display(Name = "Description")]
         [Required(ErrorMessage = "Description is required.")]
         public string Prod_Description { get; set; }
 
-        [Display(Name = "Product Price")]
+        [Display(Name = "Price")]
         [Required(ErrorMessage = "Price is required.")]
         [Range(0, double.MaxValue, ErrorMessage = "Price must be greater than or equal to 0.")]
         public decimal Prod_Price { get; set; }
@@ -32,8 +32,8 @@ namespace testtt.Models.ViewsModels
         public int Prod_Stock { get; set; }
 
         [Display (Name ="Select Product Picture...")]
-        [Required(ErrorMessage = "Prod_Image is required.")]
-        public byte[] Prod_Image { get; set; }
-        //public byte[] Prod_ImageUrl { get; set; }
+        //[Required(ErrorMessage = "Product image is required.")]
+        public byte[] ? Prod_Image { get; set; }
+
     }
 }

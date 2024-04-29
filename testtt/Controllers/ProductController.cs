@@ -8,10 +8,11 @@ using testtt.Models.ViewsModels;
 
 namespace testtt.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class ProductController : Controller
     {
         private readonly ApplicationDbContext _context;
+
         //private readonly IToastNotification _toastNotification;
         private new List<string> _allowedExtenstions = new List<string> { ".jpg", ".jpeg", ".png", ".gif" };
         private long _maxAllowedPosterSize = 1048576;
@@ -29,20 +30,20 @@ namespace testtt.Controllers
         {
             var viewModel = new ProductViewModel
             {
-                
+
             };
 
-            return View(); 
+            return View(viewModel); 
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add_Product(ProductViewModel model)
         {
-            //if (!ModelState.IsValid)
-            //{
-            //    return View();
-            //}
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
 
             var files = Request.Form.Files;
 
