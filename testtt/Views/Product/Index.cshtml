@@ -21,10 +21,11 @@
     }
     else
     {
-        <ul>
-            @foreach(var product in Model)
-            {
-                <div class="row">
+
+            
+            <div class="row">
+                @foreach (var product in Model)
+                {
                     <div class="col-12">
                         <div class="card mb-3">
                             <div class="row no-gutters">
@@ -58,8 +59,53 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            }
-        </ul>
+                }
+            </div>
+            
     }
 </div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.js-delete').on('click', function () {
+
+                var btn = $(this);
+
+                bootbox.confirm({
+                    message: "Are you sure that you need to delete this product?",
+                    buttons: {
+                        confirm: {
+                            label: 'Yes',
+                            className: 'btn-danger'
+                        },
+                        cancel: {
+                            label: 'No',
+                            className: 'btn-outline-secondary'
+                        }
+                    },
+                    callback: function (result) {
+                        if (result) {
+                            $.ajax({
+                                url: '/Product/Delete/' + btn.data('id'),
+                                success: function () {
+                                    var productContainer = btn.parents('.col-12');
+                                    productContainer.addClass('animate__animated animate__zoomOut');
+
+                                    setTimeout(function () {
+                                        productContainer.remove();
+                                    }, 1000);
+
+                                    toastr.success('Product deleted');
+                                },
+                                error: function () {
+                                    toastr.error('Something went wrong!');
+                                }
+                            });
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+}
