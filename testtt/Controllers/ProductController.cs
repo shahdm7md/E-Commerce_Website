@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NToastNotify;
 using testtt.Data;
 using testtt.Models;
 using testtt.Models.ViewsModels;
@@ -13,13 +14,14 @@ namespace testtt.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        //private readonly IToastNotification _toastNotification;
+        private readonly IToastNotification _toastNotification;
         private new List<string> _allowedExtenstions = new List<string> { ".jpg", ".jpeg", ".png", ".gif" };
         private long _maxAllowedPosterSize = 1048576;
 
-        public ProductController(ApplicationDbContext context)
+        public ProductController(ApplicationDbContext context, IToastNotification toastNotification)
         {
             _context = context;
+            _toastNotification = toastNotification;
         }
         public async Task<IActionResult> Index()
         {
@@ -84,6 +86,8 @@ namespace testtt.Controllers
             _context.Products.Add(products);
             _context.SaveChanges();
 
+            _toastNotification.AddSuccessToastMessage("Product Added Successfully");
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -113,6 +117,10 @@ namespace testtt.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(ProductViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return View("Add_Product", model);
+            }
 
             var product = await _context.Products.FindAsync(model.Id);
 
@@ -121,12 +129,12 @@ namespace testtt.Controllers
 
             var files = Request.Form.Files;
 
-            if (!files.Any())
+            if (files.Any())
             {
                 var prodimage = files.FirstOrDefault();
 
                 using var dataStream = new MemoryStream();
-
+                 
                 await prodimage.CopyToAsync(dataStream);
 
                 model.Prod_Image = dataStream.ToArray();
@@ -152,8 +160,24 @@ namespace testtt.Controllers
             product.Prod_Stock=model.Prod_Stock;
             _context.SaveChanges();
 
-           // _toastNotification.AddSuccessToastMessage("Movie updated successfully");
+            _toastNotification.AddSuccessToastMessage("Product Updated Successfully");
             return RedirectToAction(nameof(Index));
         }
+
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+                return BadRequest();
+
+            var product = await _context.Products.FindAsync(id);
+
+            if (product == null)
+                return NotFound();
+
+            _context.Products.Remove(product);
+            _context.SaveChanges();
+
+            return Ok();
         }
+    }
 }

@@ -28,8 +28,9 @@ namespace testtt.Models
 
         //[RegularExpression(@"^(https?|ftp):\/\/[^\s\/$.?#].[^\s]*$", ErrorMessage = "Invalid URL.")]
         //public byte[] Prod_ImageUrl { get; set; }
-        [Required(ErrorMessage = "Prod_Image is required.")]
-        public byte[] Prod_Image { get; set; }
+        //[Required(ErrorMessage = "Prod_Image is required.")]
+        [Display(Name = "Select Product Picture...")]
+        public byte[] ? Prod_Image { get; set; }
 
         // Navigation property for OrderDetails
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }

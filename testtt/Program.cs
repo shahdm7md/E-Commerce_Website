@@ -29,14 +29,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(Options =>
     Options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-//builder.Services.AddMvc().AddNToastNotifyToastr(new ToastrOptions()
-//{
-//    progress
-//    ProgressBar = true,
-//    PositionClass = ToastPositions.TopRight,
-//    PreventDuplicates = true,
-//    CloseButton = true
-//});
+builder.Services.AddMvc().AddNToastNotifyToastr(new ToastrOptions()
+{
+    ProgressBar = true,
+    PositionClass = ToastPositions.TopRight,
+    PreventDuplicates = true,
+    CloseButton = true
+});
 //builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 var app = builder.Build();
