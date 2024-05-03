@@ -168,6 +168,9 @@ namespace testtt.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<decimal>("Total")
+                        .HasColumnType("decimal(18,2)");
+
                     b.HasKey("Cart_ID");
 
                     b.HasIndex("Cus_ID");
@@ -197,9 +200,6 @@ namespace testtt.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("Sub_total")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("Total")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("Unit_price")
@@ -416,7 +416,6 @@ namespace testtt.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("Prod_Image")
-                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<string>("Prod_Name")

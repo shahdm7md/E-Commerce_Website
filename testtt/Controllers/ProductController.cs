@@ -18,11 +18,13 @@ namespace testtt.Controllers
         private readonly IToastNotification _toastNotification;
         private new List<string> _allowedExtenstions = new List<string> { ".jpg", ".jpeg", ".png", ".gif" };
         private long _maxAllowedPosterSize = 1048576;
+        private readonly UserManager<Customer> _userManager;
 
-        public ProductController(ApplicationDbContext context, IToastNotification toastNotification)
+        public ProductController(ApplicationDbContext context, IToastNotification toastNotification, UserManager<Customer> userManager)
         {
             _context = context;
             _toastNotification = toastNotification;
+            _userManager = userManager;
         }
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
@@ -182,11 +184,77 @@ namespace testtt.Controllers
 
             return Ok();
         }
-        public IActionResult UserProducts()
+
+        [HttpGet]
+        public async Task <IActionResult> UserProducts()
         {
-            var products = _context.Products.ToList(); // استرجاع كافة المنتجات من قاعدة البيانات
-            return View(products); // إرسال قائمة المنتجات إلى الصفحة لتتم عرضها هناك
+            var products = await _context.Products.ToListAsync(); // استرجاع كافة المنتجات من قاعدة البيانات
+            return View("UserProducts", products); // إرسال قائمة المنتجات إلى الصفحة لتتم عرضها هناك
         }
+
+       
+        [HttpPost]
+        public IActionResult AddToCart(int productId)
+        {
+            if (productId == null || productId <= 0)
+                return BadRequest("Invalid product ID");
+
+            // Get the currently logged-in user
+            var user = _userManager.GetUserAsync(User).Result;
+
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Account"); 
+            }
+
+            var product = _context.Products.FirstOrDefault(p => p.Prod_ID == productId);
+            if (product == null)
+            {
+                return NotFound("Product not found.");
+            }
+
+            // Find or create a cart for the user
+            var cart = _context.Carts.FirstOrDefault(c => c.Cus_ID == user.Id);
+            if (cart == null)
+            {
+                cart = new Cart { Cus_ID = user.Id };
+                _context.Carts.Add(cart);
+                _context.SaveChanges();
+            }
+
+            var existingCartItem = _context.CartItems.FirstOrDefault(ci => ci.Cart_ID == cart.Cart_ID && ci.Prod_ID == productId);
+
+            if (existingCartItem != null)
+            {
+                // If the product is already in the cart, increase the quantity
+                existingCartItem.Quantity++;
+                existingCartItem.Sub_total = existingCartItem.Quantity * existingCartItem.Unit_price;
+                
+            }
+            else
+            {
+                  // var prodmodel = new ProductViewModel();
+                // If the product is not in the cart, create a new cart item
+                //var product1 = _context.Products.Find(productId);
+                var newCartItem = new CartItem
+                {
+                    Cart_ID = cart.Cart_ID,
+                    Prod_ID = productId,
+                    Quantity = 1,
+                    Unit_price = product.Prod_Price,
+                    Sub_total = product.Prod_Price
+                };
+                _context.CartItems.Add(newCartItem);
+            }
+
+            cart.Total = _context.CartItems.Where(ci => ci.Cart_ID == cart.Cart_ID).Sum(ci => ci.Sub_total);
+
+
+            _context.SaveChanges();
+
+            return RedirectToAction( "UserProducts", "Product");
+        }
+
 
     }
 

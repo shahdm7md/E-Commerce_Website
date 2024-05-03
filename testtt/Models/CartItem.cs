@@ -27,7 +27,7 @@ namespace testtt.Models
 
         public decimal? Discount_rate { get; set; }
 
-        public decimal Total { get; set; }
+        //public decimal Total { get; set; }
 
         // Navigation property for Product
         public virtual Product Product { get; set; }
