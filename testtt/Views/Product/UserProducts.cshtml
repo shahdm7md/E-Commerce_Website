@@ -1,0 +1,164 @@
+﻿@model IEnumerable<Product>
+
+@{
+    ViewData["Title"] = "Products";
+}
+
+<h2>
+    <i class="bi bi-flower3"></i> Products
+</h2>
+<hr />
+
+<div class="mt-4">
+    @if (!Model.Any())  // لا توجد منتجات
+    {
+        <div class="alert alert-warning" role="alert">
+            <i class="bi bi-exclamation-triangle"></i>
+            No Products found!
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var product in Model)
+            {
+                <div class="col-12">
+                    <div class="card mb-3">
+                        <div class="row no-gutters">
+                            <div class="col-md-2 prodimage" style="background-image: url(data:image\/*;base64,@(Convert.ToBase64String(product.Prod_Image)))"></div>
+                            <div class="col-md-10">
+                                <div class="card-body d-flex flex-column justify-content-between h-100">
+                                    <div>
+                                        <h3 class="card-title">@product.Prod_Name </h3>
+                                        <h6>Price = @product.Prod_Price $ </h6>
+                                        @if (product.Prod_Stock > 0)
+                                        {
+                                            <h6>Stock = (@product.Prod_Stock) </h6>
+                                        }
+                                        else
+                                        {
+                                            <p class="text-danger">Out of Stock</p>
+                                        }
+                                        <p class="card-text text-justify">@(product.Prod_Description.Length > 500 ? $"{product.Prod_Description.Substring(0, 500)}..." : product.Prod_Description)</p>
+                                    </div>
+                                    <div>
+                                        @if (product.Prod_Stock > 0)
+                                        {
+                                            <form id="addToCartForm-@product.Prod_ID">
+                                                <input type="hidden" name="productId" value="@product.Prod_ID" />
+                                                <button type="submit" class="btn btn-primary addToCartBtn">
+                                                    <i class="bi bi-cart-dash-fill"></i>
+                                                    Add to Cart
+                                                </button>
+                                            </form>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+
+@* @model IEnumerable<Product>
+
+@{
+    ViewData["Title"] = "Product";
+}
+
+<style>
+    .card-img-top {
+        height: 200px; /* ارتفاع الصورة */
+        object-fit: cover; /* لتغطية مساحة الصورة بالكامل داخل العنصر */
+    }
+</style>
+
+<h2>
+    <i class="bi bi-flower3"></i> Products
+</h2>
+<hr />
+
+<div class="mt-4">
+    @if (!Model.Any())  // لا توجد منتجات
+    {
+        <div class="alert alert-warning" role="alert">
+            <i class="bi bi-exclamation-triangle"></i>
+            No Products found!
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var product in Model)
+            {
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <img src="data:image/*;base64,@(Convert.ToBase64String(product.Prod_Image))" class="card-img-top" alt="Product Image">
+                        <div class="card-body">
+                            <h3 class="card-title">@product.Prod_Name</h3>
+                            <h6>Price: $@product.Prod_Price</h6>
+                            <h6>Stock: @product.Prod_Stock</h6>
+                            <p class="card-text">@product.Prod_Description</p>
+                            <form id="addToCartForm-@product.Prod_ID">
+                                <input type="hidden" name="productId" value="@product.Prod_ID" />
+                                <button type="submit" class="btn btn-secondary addToCartBtn">
+                                    <i class="bi bi-cart-dash-fill"></i>
+                                    Add to Cart
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+*@
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.addToCartBtn').on('click', function (e) {
+                e.preventDefault();
+                var form = $(this).closest('form');
+                var productId = form.find('input[name="productId"]').val();
+
+                bootbox.confirm({
+                    message: "Are you sure you want to add this product to your cart?",
+                    buttons: {
+                        confirm: {
+                            label: 'Yes',
+                            className: 'btn-primary'
+                        },
+                        cancel: {
+                            label: 'No',
+                            className: 'btn-secondary'
+                        }
+                    },
+                    callback: function (result) {
+                        if (result) {
+                            // Perform logic to add product to cart
+                            // For demonstration purposes, let's assume there's a cart mechanism already implemented
+                            // You may need to implement your own logic here
+                            $.ajax({
+                                url: '/Cart/AddToCart',
+                                type: 'POST',
+                                data: { productId: productId },
+                                success: function () {
+                                    alert('Product added to cart successfully!');
+                                },
+                                error: function () {
+                                    alert('Failed to add product to cart!');
+                                }
+                            });
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+} 
