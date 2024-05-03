@@ -9,9 +9,10 @@ using testtt.Models.ViewsModels;
 
 namespace testtt.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    
     public class ProductController : Controller
     {
+
         private readonly ApplicationDbContext _context;
 
         private readonly IToastNotification _toastNotification;
@@ -23,12 +24,13 @@ namespace testtt.Controllers
             _context = context;
             _toastNotification = toastNotification;
         }
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             var products = await _context.Products.ToListAsync();
             return View(products);
         }
-
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Add_Product()
         {
             var viewModel = new ProductViewModel
@@ -38,7 +40,7 @@ namespace testtt.Controllers
 
             return View(viewModel); 
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add_Product(ProductViewModel model)
@@ -90,7 +92,7 @@ namespace testtt.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -113,6 +115,7 @@ namespace testtt.Controllers
 
             return View("Add_Product", viewModel);
         }
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(ProductViewModel model)
@@ -163,7 +166,7 @@ namespace testtt.Controllers
             _toastNotification.AddSuccessToastMessage("Product Updated Successfully");
             return RedirectToAction(nameof(Index));
         }
-
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -179,5 +182,12 @@ namespace testtt.Controllers
 
             return Ok();
         }
+        public IActionResult UserProducts()
+        {
+            var products = _context.Products.ToList(); // استرجاع كافة المنتجات من قاعدة البيانات
+            return View(products); // إرسال قائمة المنتجات إلى الصفحة لتتم عرضها هناك
+        }
+
     }
+
 }
