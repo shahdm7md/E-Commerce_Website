@@ -47,7 +47,8 @@
                                         {
                                             <form id="addToCartForm-@product.Prod_ID">
                                                 <input type="hidden" name="productId" value="@product.Prod_ID" />
-                                                <button type="submit" class="btn btn-primary addToCartBtn">
+@*                                                 <button type="submit" class="btn btn-primary addToCartBtn">
+                                    *@             <button type="submit" class="btn btn-primary addToCartBtn" data-product-id="@product.Prod_ID">
                                                     <i class="bi bi-cart-dash-fill"></i>
                                                     Add to Cart
                                                 </button>
@@ -126,7 +127,11 @@
             $('.addToCartBtn').on('click', function (e) {
                 e.preventDefault();
                 var form = $(this).closest('form');
-                var productId = form.find('input[name="productId"]').val();
+                // var productId = form.find('input[name="productId"]').val();
+                var productId = $(this).data('product-id');
+
+                //var formData = form.serialize();
+                var btn = $(this);
 
                 bootbox.confirm({
                     message: "Are you sure you want to add this product to your cart?",
@@ -146,14 +151,20 @@
                             // For demonstration purposes, let's assume there's a cart mechanism already implemented
                             // You may need to implement your own logic here
                             $.ajax({
-                                url: '/Cart/AddToCart',
+                                url: '@Url.Action("AddToCart", "Product")' /* '/Product/AddToCart' */  /* + productId */   /* + btn.data('id') */,
                                 type: 'POST',
                                 data: { productId: productId },
+                                // data: formData + '&productId=' + productId,
                                 success: function () {
+                                    //alert(response);
                                     alert('Product added to cart successfully!');
                                 },
-                                error: function () {
-                                    alert('Failed to add product to cart!');
+                                // error: function () {
+                                //     alert('Failed to add product to cart!');
+                                // }
+                                error: function (xhr, status, error) {
+                                    var errorMessage = xhr.status + ': ' + xhr.statusText;
+                                    alert('Failed to add product to cart! Error: ' + errorMessage);
                                 }
                             });
                         }

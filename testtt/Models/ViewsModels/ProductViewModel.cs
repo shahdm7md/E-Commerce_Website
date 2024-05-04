@@ -6,6 +6,9 @@ namespace testtt.Models.ViewsModels
 {
     public class ProductViewModel
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column(Order = 1)]
         public int Id { get; set; }
 
         [Display(Name = "Product Name")]
