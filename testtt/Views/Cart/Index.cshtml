@@ -212,3 +212,33 @@
 </body>
 
 </html>
+
+<script>
+	// Function to increase the quantity
+	$('.increase').on('click', function () {
+		var input = $(this).closest('.quantity-container').find('.quantity-amount');
+		var newValue = parseInt(input.val()) + 1;
+		input.val(newValue);
+
+		var productId = $(this).closest('tr').data('product-id');
+		updateQuantity(productId, newValue);
+	});
+
+	// Function to update the quantity using AJAX
+	function updateQuantity(productId, quantity) {
+		$.ajax({
+			url: '@Url.Action("UpdateQuantity", "Cart")',
+			type: 'POST',
+			data: { productId: productId, quantity: quantity },
+			success: function (response) {
+				// Handle success if needed
+				console.log("Quantity updated successfully.");
+			},
+			error: function (xhr, status, error) {
+				// Handle error if needed
+				console.error("Failed to update quantity:", error);
+			}
+		});
+	}
+</script>
+
