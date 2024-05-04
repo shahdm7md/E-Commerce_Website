@@ -13,6 +13,8 @@ namespace testtt.Models
         [ForeignKey("Customer")]
         public string Cus_ID { get; set; }
 
+        public decimal Total { get; set; }
+
         public virtual Customer Customer { get; set; }
 
         // Navigation property for CartItems
