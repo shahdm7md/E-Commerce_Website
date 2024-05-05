@@ -202,12 +202,18 @@ namespace testtt.Controllers
             // Get the currently logged-in user
             var user = _userManager.GetUserAsync(User).Result;
 
-            if (user == null)
-            {
-                return RedirectToAction("Login", "Account"); 
-            }
+			//if (user == null)
+			//{
+			//    return RedirectToPage("./Login");
+			//    //return RedirectToAction("Login", "Account"); 
+			//}
+			if (!User.Identity.IsAuthenticated)
+			{
+				// Redirect to the login page
+				return RedirectToPage("./Login");
+			}
 
-            var product = _context.Products.FirstOrDefault(p => p.Prod_ID == productId);
+			var product = _context.Products.FirstOrDefault(p => p.Prod_ID == productId);
             if (product == null)
             {
                 return NotFound("Product not found.");
