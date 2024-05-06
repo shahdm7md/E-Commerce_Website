@@ -87,12 +87,13 @@
 										
 										<td>
 											<div class="input-group mb-3 d-flex align-items-center quantity-container" style="max-width: 120px;">
+												<input type="hidden" name="productId" value="@products.Prod_ID" />
 												<div class="input-group-prepend">
-													<button class="btn btn-outline-black decrease" type="button" >&minus;</button>
+													<button class="btn btn-outline-black decrease" type="button" data-product-id="@products.Prod_ID">&minus;</button>
 												</div>
-												<input type="text" class="form-control text-center quantity-amount" value="1" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+												<input type="text" class="form-control text-center quantity-amount" value="1" data-product-id="@products.Prod_ID" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
 												<div class="input-group-append">
-													<button class="btn btn-outline-black increase" type="button" >&plus;</button>
+													<button class="btn btn-outline-black increase" type="button" data-product-id="@products.Prod_ID">&plus;</button>
 												</div>
 											</div>
 										</td>
@@ -213,32 +214,41 @@
 
 </html>
 
+<!-- Include jQuery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<!-- Your custom script -->
 <script>
-	// Function to increase the quantity
-	$('.increase').on('click', function () {
-		var input = $(this).closest('.quantity-container').find('.quantity-amount');
-		var newValue = parseInt(input.val()) + 1;
-		input.val(newValue);
+	$(document).ready(function () {
+		// Function to increase the quantity
+		$('.increase').on('click', function () {
+			var productId = $(this).data('product-id');
+			var input = $(this).closest('.quantity-container').find('.quantity-amount');
+			var newValue = parseInt(input.val()) ;
+			input.val(newValue);
 
-		var productId = $(this).closest('tr').data('product-id');
-		updateQuantity(productId, newValue);
-	});
-
-	// Function to update the quantity using AJAX
-	function updateQuantity(productId, quantity) {
-		$.ajax({
-			url: '@Url.Action("UpdateQuantity", "Cart")',
-			type: 'POST',
-			data: { productId: productId, quantity: quantity },
-			success: function (response) {
-				// Handle success if needed
-				console.log("Quantity updated successfully.");
-			},
-			error: function (xhr, status, error) {
-				// Handle error if needed
-				console.error("Failed to update quantity:", error);
-			}
+			//var productId = $(this).closest('tr').data('product-id');
+			updateQuantity(productId, newValue);
 		});
-	}
+
+		// Function to update the quantity using AJAX
+		function updateQuantity(productId, quantity) {
+			$.ajax({
+				url: '@Url.Action("UpdateQuantity", "Cart")',
+				type: 'POST',
+				data: { productId: productId, quantity: quantity },
+				success: function (response) {
+					// Handle success if needed
+					console.log("Quantity updated successfully.");
+				},
+				error: function (xhr, status, error) {
+					// Handle error if needed
+					console.error("Failed to update quantity:", error);
+				}
+			});
+		}
+	});
 </script>
+
+
 

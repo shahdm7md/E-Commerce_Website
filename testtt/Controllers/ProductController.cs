@@ -192,8 +192,9 @@ namespace testtt.Controllers
             return View("UserProducts", products); // إرسال قائمة المنتجات إلى الصفحة لتتم عرضها هناك
         }
 
-       
-        [HttpPost]
+
+		[Authorize]
+		[HttpPost]
         public IActionResult AddToCart(int productId)
         {
             if (productId == null || productId <= 0)
@@ -202,12 +203,7 @@ namespace testtt.Controllers
             // Get the currently logged-in user
             var user = _userManager.GetUserAsync(User).Result;
 
-            if (user == null)
-            {
-                return RedirectToAction("Login", "Account"); 
-            }
-
-            var product = _context.Products.FirstOrDefault(p => p.Prod_ID == productId);
+			var product = _context.Products.FirstOrDefault(p => p.Prod_ID == productId);
             if (product == null)
             {
                 return NotFound("Product not found.");
@@ -252,6 +248,7 @@ namespace testtt.Controllers
 
             _context.SaveChanges();
 
+            _toastNotification.AddSuccessToastMessage("Product Added to cart Successfully");
             return RedirectToAction( "UserProducts", "Product");
         }
 

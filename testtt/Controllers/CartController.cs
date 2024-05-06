@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NToastNotify;
 using System.Dynamic;
 using System.Security.Claims;
 using testtt.Data;
@@ -10,13 +13,18 @@ namespace testtt.Controllers
     public class CartController : Controller
     {
         private readonly ApplicationDbContext _context;
+		private readonly UserManager<Customer> _userManager;
+        private readonly IToastNotification _toastNotification;
 
-        public CartController(ApplicationDbContext context)
+        public CartController(ApplicationDbContext context, UserManager<Customer> userManager, IToastNotification toastNotification)
         {
             _context = context;
+			_userManager = userManager;
+			_toastNotification = toastNotification;
         }
-        
-        public  IActionResult Index()
+
+		[Authorize]
+		public  IActionResult Index()
         {
             dynamic viewModel= new ExpandoObject();
 
@@ -28,64 +36,72 @@ namespace testtt.Controllers
                     .ThenInclude(ci => ci.Product)
                 .FirstOrDefault(c => c.Cus_ID == userId);
 
-            if (userCart == null)
+			var user = _userManager.GetUserAsync(User).Result;
+			var cart = _context.Carts.FirstOrDefault(c => c.Cus_ID == user.Id);
+			if (cart == null)
+			{
+				cart = new Cart { Cus_ID = user.Id };
+				_context.Carts.Add(cart);
+				_context.SaveChanges();
+			}
+
+			if (userCart != null)
+			{
+				//var products =  _context.Products.ToList();
+				var productsInCart = userCart.CartItems.Select(ci => ci.Product).ToList();
+
+				//viewModel.Products = products;
+				viewModel.Products = productsInCart;
+				viewModel.UserCart = userCart;
+			}
+            else
             {
-                // If the user doesn't have a cart, create an empty cart
-                userCart = new Cart { Cus_ID = userId };
-                _context.Carts.Add(userCart);
-                _context.SaveChanges();
+                viewModel.Products = new List<Product>(); // If userCart is null, provide an empty list of products
+                viewModel.UserCart = null; // Set UserCart to null
             }
+            //         var carts = _context.Carts.ToList();
+            //viewModel.Carts = carts;
 
-
-            //var products =  _context.Products.ToList();
-            var productsInCart = userCart.CartItems.Select(ci => ci.Product).ToList();
-
-            //viewModel.Products = products;
-            viewModel.Products = productsInCart;
-            viewModel.UserCart = userCart;
-
-   //         var carts = _context.Carts.ToList();
-			//viewModel.Carts = carts;
-
-			//var cartitems = _context.CartItems.Include(c=>c.Product).Include(c=>c.Cart);
-   //         viewModel.CartItems = cartitems;
-			return View(viewModel);
+            //var cartitems = _context.CartItems.Include(c=>c.Product).Include(c=>c.Cart);
+            //         viewModel.CartItems = cartitems;
+            return View(viewModel);
         }
 
-
+		[Authorize]
 		[HttpPost]
-		public IActionResult UpdateQuantity(int productId, int quantity)
+		public async Task<IActionResult> UpdateQuantity(int productId, int quantity)
 		{
-			// Get the currently logged-in user's ID
-			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+			// Retrieve the cart item by product ID
+			//var cartItem = _context.CartItems.FirstOrDefault(ci => ci.Prod_ID == productId);
 
-			// Find the user's cart
-			var userCart = _context.Carts
-				.Include(c => c.CartItems)
-					.ThenInclude(ci => ci.Product)
-				.FirstOrDefault(c => c.Cus_ID == userId);
+			var user = await _userManager.GetUserAsync(User);
 
-			if (userCart == null)
+			var cart = _context.Carts.FirstOrDefault(c => c.Cus_ID == user.Id);
+			if (cart == null)
 			{
-				return NotFound("Cart not found for the current user.");
+				// User does not have a cart, handle this scenario
+				return BadRequest("Cart not found for the user.");
 			}
 
-			// Find the cart item corresponding to the specified product
-			var cartItem = userCart.CartItems.FirstOrDefault(ci => ci.Product.Prod_ID == productId);
+			var existingCartItem = _context.CartItems.FirstOrDefault(ci => ci.Cart_ID == cart.Cart_ID && ci.Prod_ID == productId);
 
-			if (cartItem == null)
+			if (existingCartItem != null)
 			{
-				return NotFound("Product not found in the cart.");
+				// Update the quantity of the cart item
+				existingCartItem.Quantity = quantity;
+
+				// Save changes to the database
+				_context.SaveChanges();
+
+				// Return a success response if needed
+				return Ok("Quantity updated successfully.");
+			}
+			else
+			{
+				// Return an error response if the cart item is not found
+				return NotFound("Cart item not found.");
 			}
 
-			// Update the quantity of the cart item
-			cartItem.Quantity = quantity;
-
-			// Save changes to the database
-			_context.SaveChanges();
-
-			// Redirect back to the cart page or return a success message
-			return Ok("Quantity updated successfully.");
 		}
 
 
