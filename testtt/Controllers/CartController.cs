@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NToastNotify;
 using System.Dynamic;
 using System.Security.Claims;
 using testtt.Data;
@@ -12,14 +14,17 @@ namespace testtt.Controllers
     {
         private readonly ApplicationDbContext _context;
 		private readonly UserManager<Customer> _userManager;
+        private readonly IToastNotification _toastNotification;
 
-		public CartController(ApplicationDbContext context, UserManager<Customer> userManager)
+        public CartController(ApplicationDbContext context, UserManager<Customer> userManager, IToastNotification toastNotification)
         {
             _context = context;
 			_userManager = userManager;
+			_toastNotification = toastNotification;
         }
-        
-        public  IActionResult Index()
+
+		[Authorize]
+		public  IActionResult Index()
         {
             dynamic viewModel= new ExpandoObject();
 
@@ -40,23 +45,29 @@ namespace testtt.Controllers
 				_context.SaveChanges();
 			}
 
+			if (userCart != null)
+			{
+				//var products =  _context.Products.ToList();
+				var productsInCart = userCart.CartItems.Select(ci => ci.Product).ToList();
 
-            //var products =  _context.Products.ToList();
-            var productsInCart = userCart.CartItems.Select(ci => ci.Product).ToList();
+				//viewModel.Products = products;
+				viewModel.Products = productsInCart;
+				viewModel.UserCart = userCart;
+			}
+            else
+            {
+                viewModel.Products = new List<Product>(); // If userCart is null, provide an empty list of products
+                viewModel.UserCart = null; // Set UserCart to null
+            }
+            //         var carts = _context.Carts.ToList();
+            //viewModel.Carts = carts;
 
-            //viewModel.Products = products;
-            viewModel.Products = productsInCart;
-            viewModel.UserCart = userCart;
-
-   //         var carts = _context.Carts.ToList();
-			//viewModel.Carts = carts;
-
-			//var cartitems = _context.CartItems.Include(c=>c.Product).Include(c=>c.Cart);
-   //         viewModel.CartItems = cartitems;
-			return View(viewModel);
+            //var cartitems = _context.CartItems.Include(c=>c.Product).Include(c=>c.Cart);
+            //         viewModel.CartItems = cartitems;
+            return View(viewModel);
         }
 
-
+		[Authorize]
 		[HttpPost]
 		public async Task<IActionResult> UpdateQuantity(int productId, int quantity)
 		{
@@ -64,10 +75,6 @@ namespace testtt.Controllers
 			//var cartItem = _context.CartItems.FirstOrDefault(ci => ci.Prod_ID == productId);
 
 			var user = await _userManager.GetUserAsync(User);
-			if (user == null)
-			{
-				return Unauthorized("User not authenticated.");
-			}
 
 			var cart = _context.Carts.FirstOrDefault(c => c.Cus_ID == user.Id);
 			if (cart == null)
