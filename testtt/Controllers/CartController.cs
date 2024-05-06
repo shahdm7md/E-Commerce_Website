@@ -10,31 +10,31 @@ using testtt.Models;
 
 namespace testtt.Controllers
 {
-    public class CartController : Controller
-    {
-        private readonly ApplicationDbContext _context;
+	public class CartController : Controller
+	{
+		private readonly ApplicationDbContext _context;
 		private readonly UserManager<Customer> _userManager;
-        private readonly IToastNotification _toastNotification;
+		private readonly IToastNotification _toastNotification;
 
-        public CartController(ApplicationDbContext context, UserManager<Customer> userManager, IToastNotification toastNotification)
-        {
-            _context = context;
+		public CartController(ApplicationDbContext context, UserManager<Customer> userManager, IToastNotification toastNotification)
+		{
+			_context = context;
 			_userManager = userManager;
 			_toastNotification = toastNotification;
-        }
+		}
 
 		[Authorize]
-		public  IActionResult Index()
-        {
-            dynamic viewModel= new ExpandoObject();
+		public IActionResult Index()
+		{
+			dynamic viewModel = new ExpandoObject();
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            // Find the user's cart
-            var userCart = _context.Carts
-                .Include(c => c.CartItems)
-                    .ThenInclude(ci => ci.Product)
-                .FirstOrDefault(c => c.Cus_ID == userId);
+			// Find the user's cart
+			var userCart = _context.Carts
+				.Include(c => c.CartItems)
+					.ThenInclude(ci => ci.Product)
+				.FirstOrDefault(c => c.Cus_ID == userId);
 
 			var user = _userManager.GetUserAsync(User).Result;
 			var cart = _context.Carts.FirstOrDefault(c => c.Cus_ID == user.Id);
@@ -54,18 +54,18 @@ namespace testtt.Controllers
 				viewModel.Products = productsInCart;
 				viewModel.UserCart = userCart;
 			}
-            else
-            {
-                viewModel.Products = new List<Product>(); // If userCart is null, provide an empty list of products
-                viewModel.UserCart = null; // Set UserCart to null
-            }
-            //         var carts = _context.Carts.ToList();
-            //viewModel.Carts = carts;
+			else
+			{
+				viewModel.Products = new List<Product>(); // If userCart is null, provide an empty list of products
+				viewModel.UserCart = null; // Set UserCart to null
+			}
+			//         var carts = _context.Carts.ToList();
+			//viewModel.Carts = carts;
 
-            //var cartitems = _context.CartItems.Include(c=>c.Product).Include(c=>c.Cart);
-            //         viewModel.CartItems = cartitems;
-            return View(viewModel);
-        }
+			//var cartitems = _context.CartItems.Include(c=>c.Product).Include(c=>c.Cart);
+			//         viewModel.CartItems = cartitems;
+			return View(viewModel);
+		}
 
 		[Authorize]
 		[HttpPost]
