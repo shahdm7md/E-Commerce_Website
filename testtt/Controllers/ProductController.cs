@@ -243,7 +243,7 @@ namespace testtt.Controllers
                 _context.CartItems.Add(newCartItem);
             }
 
-            cart.Total = _context.CartItems.Where(ci => ci.Cart_ID == cart.Cart_ID).Sum(ci => ci.Sub_total);
+            //cart.Total = _context.CartItems.Where(ci => ci.Cart_ID == cart.Cart_ID).Sum(ci => ci.Sub_total);
 
 
             _context.SaveChanges();

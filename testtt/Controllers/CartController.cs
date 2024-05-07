@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using NToastNotify;
 using System.Dynamic;
 using System.Security.Claims;
 using testtt.Data;
 using testtt.Models;
+using testtt.Models.ViewsModels;
 
 namespace testtt.Controllers
 {
@@ -24,9 +26,11 @@ namespace testtt.Controllers
 		}
 
 		[Authorize]
-		public IActionResult Index()
+		public IActionResult Index(int? id)
 		{
-			dynamic viewModel = new ExpandoObject();
+			//dynamic viewModel = new ExpandoObject();
+			List<CartItemViewModel> cartItemViewModels = new List<CartItemViewModel>();
+
 
 			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
@@ -45,26 +49,40 @@ namespace testtt.Controllers
 				_context.SaveChanges();
 			}
 
+			//var prodmodel = await _context.Products.FindAsync(id);
+			//var existingCartItem = _context.CartItems.FirstOrDefault(ci => ci.Cart_ID == cart.Cart_ID && ci.Prod_ID == id);
+			decimal total = 0;
 			if (userCart != null)
 			{
-				//var products =  _context.Products.ToList();
-				var productsInCart = userCart.CartItems.Select(ci => ci.Product).ToList();
+				foreach (var cartItem in userCart.CartItems)
+				{
+					var cartItemViewModel = new CartItemViewModel
+					{
+						CartItem = cartItem,
+						Product = cartItem.Product,
+						Cart= userCart
 
-				//viewModel.Products = products;
-				viewModel.Products = productsInCart;
-				viewModel.UserCart = userCart;
+					};
+					cartItemViewModels.Add(cartItemViewModel);
+
+					total += cartItem.Sub_total;
+				}
 			}
-			else
-			{
-				viewModel.Products = new List<Product>(); // If userCart is null, provide an empty list of products
-				viewModel.UserCart = null; // Set UserCart to null
-			}
+			//else
+			//{
+			//	viewModel.Products = new List<Product>(); // If userCart is null, provide an empty list of products
+			//	viewModel.UserCart = null; // Set UserCart to null
+			//}
 			//         var carts = _context.Carts.ToList();
 			//viewModel.Carts = carts;
 
 			//var cartitems = _context.CartItems.Include(c=>c.Product).Include(c=>c.Cart);
 			//         viewModel.CartItems = cartitems;
-			return View(viewModel);
+
+			userCart.Total = total;
+			_context.SaveChanges();
+
+			return View(cartItemViewModels);
 		}
 
 		[Authorize]
@@ -89,6 +107,7 @@ namespace testtt.Controllers
 			{
 				// Update the quantity of the cart item
 				existingCartItem.Quantity = quantity;
+				existingCartItem.Sub_total = quantity * existingCartItem.Unit_price;
 
 				// Save changes to the database
 				_context.SaveChanges();
