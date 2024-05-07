@@ -1,4 +1,6 @@
-﻿@model dynamic
+﻿@* @model dynamic
+ *@
+ @model List<CartItemViewModel>
 
 <!-- /*
 
@@ -73,38 +75,43 @@
 								</tr>
 							</thead>
 							<tbody>
-								@foreach (var products in Model.Products)
+								@foreach (var products in Model)
 								{
 									<tr>
 										<td class="product-thumbnail">
-											<div class="col-md-2 prodimage" style="background-image: url(data:image\/*;base64,@(Convert.ToBase64String(products.Prod_Image))); background-size:contain; background-repeat: no-repeat; background-position: center; width: auto; height: auto; padding-top: auto;"></div>
+											<div class="col-md-2 prodimage" style="background-image: url(data:image\/*;base64,@(Convert.ToBase64String(products.Product.Prod_Image))); background-size:contain; background-repeat: no-repeat; background-position: center; width: auto; height: auto; padding-top: auto;"></div>
 
 										</td>
 										<td class="product-name">
-											@products.Prod_Name
+											@products.Product.Prod_Name
 										</td>
-										<td>@products.Prod_Price</td>
+										<td>@products.Product.Prod_Price</td>
 										
 										<td>
 											<div class="input-group mb-3 d-flex align-items-center quantity-container" style="max-width: 120px;">
-												<input type="hidden" name="productId" value="@products.Prod_ID" />
+												<input type="hidden" name="productId" value="@products.Product.Prod_ID" />
 												<div class="input-group-prepend">
-													<button class="btn btn-outline-black decrease" type="button" data-product-id="@products.Prod_ID">&minus;</button>
+													<button class="btn btn-outline-black decrease" type="button" data-product-id="@products.Product.Prod_ID">&minus;</button>
 												</div>
-												<input type="text" class="form-control text-center quantity-amount" value="1" data-product-id="@products.Prod_ID" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+												<input type="text" class="form-control text-center quantity-amount" value="@products.CartItem.Quantity" data-product-id="@products.Product.Prod_ID" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
 												<div class="input-group-append">
-													<button class="btn btn-outline-black increase" type="button" data-product-id="@products.Prod_ID">&plus;</button>
+													<button class="btn btn-outline-black increase" type="button" data-product-id="@products.Product.Prod_ID">&plus;</button>
 												</div>
 											</div>
 										</td>
-										<td>@products.Prod_Price</td>
-										
+
+										<td>@products.CartItem.Sub_total</td>
+
+
 										<td> <a href="#" class="btn btn-black btn-sm" onclick="deleteRow(this)">X</a></td>
 
-									</tr>
+                                    </tr>
 
-
-								}
+								
+                                }
+								
+								
+									
 							</tbody>
 						</table>
 					</div>
@@ -142,7 +149,8 @@
 									<h3 class="text-black h4 text-uppercase">Cart Totals</h3>
 								</div>
 							</div>
-							<div class="row mb-3">
+							
+								<div class="row mb-3">
 								<div class="col-md-6">
 									<span class="text-black">Subtotal</span>
 								</div>
@@ -155,9 +163,10 @@
 									<span class="text-black">Total</span>
 								</div>
 								<div class="col-md-6 text-right">
-									<strong class="text-black">$230.00</strong>
+									<strong class="text-black">@Model.FirstOrDefault()?.Cart.Total</strong>
 								</div>
 							</div>
+							
 
 							<div class="row">
 								<div class="col-md-12">
@@ -225,6 +234,37 @@
 			var productId = $(this).data('product-id');
 			var input = $(this).closest('.quantity-container').find('.quantity-amount');
 			var newValue = parseInt(input.val()) ;
+			input.val(newValue);
+
+			//var productId = $(this).closest('tr').data('product-id');
+			updateQuantity(productId, newValue);
+		});
+
+		// Function to update the quantity using AJAX
+		function updateQuantity(productId, quantity) {
+			$.ajax({
+				url: '@Url.Action("UpdateQuantity", "Cart")',
+				type: 'POST',
+				data: { productId: productId, quantity: quantity },
+				success: function (response) {
+					// Handle success if needed
+					console.log("Quantity updated successfully.");
+				},
+				error: function (xhr, status, error) {
+					// Handle error if needed
+					console.error("Failed to update quantity:", error);
+				}
+			});
+		}
+	});
+</script>
+<script>
+	$(document).ready(function () {
+		// Function to increase the quantity
+		$('.decrease').on('click', function () {
+			var productId = $(this).data('product-id');
+			var input = $(this).closest('.quantity-container').find('.quantity-amount');
+			var newValue = parseInt(input.val());
 			input.val(newValue);
 
 			//var productId = $(this).closest('tr').data('product-id');
