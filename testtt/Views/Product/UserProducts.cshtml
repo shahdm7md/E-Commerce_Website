@@ -1,4 +1,25 @@
-﻿@model IEnumerable<Product>
+﻿<style>
+    .card-img-top {
+        height: 200px; /* ارتفاع الصورة */
+        object-fit: cover; /* لتغطية مساحة الصورة بالكامل داخل العنصر */
+    }
+
+    /* تغيير لون زر الإضافة ليكون أخضر */
+    .addToCartBtn {
+        background-color: #3B5D50; /* لون خلفية الزر */
+        border-color: #3B5D50; /* لون حدود الزر */
+    }
+
+        /* تغيير لون زر الإضافة عندما يتم التحويل عليه */
+        .addToCartBtn:hover {
+            background-color: #2E4338; /* لون خلفية الزر عند التحويل عليه */
+            border-color: #2E4338; /* لون حدود الزر عند التحويل عليه */
+        }
+</style>
+
+
+
+@model IEnumerable<Product>
 
 @{
     ViewData["Title"] = "Products";

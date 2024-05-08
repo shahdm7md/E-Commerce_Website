@@ -122,6 +122,35 @@ namespace testtt.Controllers
 			}
 
 		}
+        [Authorize]
+        [HttpPost]
+		[Authorize]
+		[HttpDelete]
+		public IActionResult DeleteCartItem(int productId)
+		{
+			var user = _userManager.GetUserAsync(User).Result;
+
+			var cart = _context.Carts.FirstOrDefault(c => c.Cus_ID == user.Id);
+			if (cart == null)
+			{
+				// User does not have a cart, handle this scenario
+				return BadRequest("Cart not found for the user.");
+			}
+
+			var cartItem = _context.CartItems.FirstOrDefault(ci => ci.Cart_ID == cart.Cart_ID && ci.Prod_ID == productId);
+			if (cartItem != null)
+			{
+				_context.CartItems.Remove(cartItem);
+				_context.SaveChanges();
+				return Json(new { success = true });
+			}
+			else
+			{
+				return Json(new { success = false });
+			}
+		}
+
+
 
 
 
