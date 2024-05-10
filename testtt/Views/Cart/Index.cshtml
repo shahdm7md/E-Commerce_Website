@@ -91,11 +91,11 @@
 											<div class="input-group mb-3 d-flex align-items-center quantity-container" style="max-width: 120px;">
 												<input type="hidden" name="productId" value="@products.Product.Prod_ID" />
 												<div class="input-group-prepend">
-													<button class="btn btn-outline-black decrease" type="button" data-product-id="@products.Product.Prod_ID">&minus;</button>
+													<button class="btn btn-outline-black decrease" onclick="decrease(this)" type="button" data-product-id="@products.Product.Prod_ID">&minus;</button>
 												</div>
 												<input type="text" class="form-control text-center quantity-amount" value="@products.CartItem.Quantity" data-product-id="@products.Product.Prod_ID" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
 												<div class="input-group-append">
-													<button class="btn btn-outline-black increase" type="button" data-product-id="@products.Product.Prod_ID">&plus;</button>
+													<button class="btn btn-outline-black increase" onclick="increase(this)" type="button" data-product-id="@products.Product.Prod_ID">&plus;</button>
 												</div>
 											</div>
 										</td>
@@ -103,7 +103,7 @@
 										<td>@products.CartItem.Sub_total</td>
 
 
-										<td>    <a href="#" class="btn btn-danger btn-sm delete-link" data-product-id="@products.Product.Prod_ID">Delete</a></td>
+										<td>    <a href="#" class="btn btn-danger btn-sm delete-link" onclick="deleteRow(this)" data-product-id="@products.Product.Prod_ID">X</a></td>
 
                                     </tr>
 
@@ -122,10 +122,10 @@
 				<div class="col-md-6">
 					<div class="row mb-5">
 						<div class="col-md-6 mb-3 mb-md-0">
-							<button class="btn btn-black btn-sm btn-block">Update Cart</button>
+							<a href="@Url.Action("UserProducts", "Product")" class="btn btn-black btn-sm btn-block">Continue Shopping</a>
 						</div>
 						<div class="col-md-6">
-							<button class="btn btn-outline-black btn-sm btn-block">Continue Shopping</button>
+							@* <button class="btn btn-outline-black btn-sm btn-block">Continue Shopping</button> *@
 						</div>
 					</div>
 					<div class="row">
@@ -152,18 +152,20 @@
 							
 								<div class="row mb-3">
 								<div class="col-md-6">
-									<span class="text-black">Subtotal</span>
+								@* 	<span class="text-black">Subtotal</span> *@
+									<strong class="text-black">@Model.FirstOrDefault()?.Cart.Total</strong>
+								</div>
 								</div>
 								<div class="col-md-6 text-right">
-									<strong class="text-black">$230.00</strong>
-								</div>
+									@* <strong class="text-black">$230.00</strong> *@
+									
 							</div>
 							<div class="row mb-5">
 								<div class="col-md-6">
-									<span class="text-black">Total</span>
+									@* <span class="text-black">Total</span> *@
 								</div>
 								<div class="col-md-6 text-right">
-									<strong class="text-black">@Model.FirstOrDefault()?.Cart.Total</strong>
+									
 								</div>
 							</div>
 							
