@@ -337,7 +337,8 @@
 								</div>
 
 								<div class="form-group">
-									<button class="btn btn-black btn-lg py-3 btn-block" onclick="window.location='thankyou.html'">Place Order</button>
+									@* <button class="btn btn-black btn-lg py-3 btn-block" onclick="window.location='thankyou.cshtml'">Place Order</button> *@
+									<button id="placeOrderBtn" class="btn btn-black btn-lg py-3 btn-block">Place Order</button>
 								</div>
 
 							</div>
@@ -456,6 +457,19 @@
 	</footer>
 	<!-- End Footer Section -->
 
+	<script>
+		document.getElementById("placeOrderBtn").addEventListener("click", function () {
+			// بمجرد النقر على الزر، قم بإرسال طلب POST إلى العنوان URL المطلوب
+			var xhr = new XMLHttpRequest();
+			xhr.open("POST", "@Url.Action("PlaceOrder", "checkout")", true);
+			xhr.setRequestHeader('Content-Type', 'application/json');
+			xhr.onload = function () {
+				// بعد إرسال الطلب، قم بالانتقال إلى الصفحة "thankyou"
+				window.location.href = "thankyou";
+			};
+			xhr.send();
+		});
+	</script>
 
 	<script src="js/bootstrap.bundle.min.js"></script>
 	<script src="js/tiny-slider.js"></script>
