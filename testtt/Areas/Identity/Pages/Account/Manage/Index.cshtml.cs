@@ -94,7 +94,7 @@ namespace testtt.Areas.Identity.Pages.Account.Manage
             {
                 FirstName = user.Cus_FName,
                 LastName = user.Cus_LName,
-                Address=user.Cus_address,
+                //Address=user.Cus_address,
                 Cus_ImageUrl = user.Cus_ImageUrl
                 //PhoneNumber = phoneNumber
             };
@@ -138,7 +138,7 @@ namespace testtt.Areas.Identity.Pages.Account.Manage
             //}
             var firstname = user.Cus_FName;
             var lastname = user.Cus_LName;
-            var address = user.Cus_address;
+           // var address = user.Cus_address;
             if (Input.FirstName != firstname)
             {
                 user.Cus_FName = Input.FirstName;
@@ -151,12 +151,12 @@ namespace testtt.Areas.Identity.Pages.Account.Manage
                 await _userManager.UpdateAsync(user);
 
             }
-            if (Input.Address != address)
-            {
-                user.Cus_address = Input.Address;
-                await _userManager.UpdateAsync(user);
+            //if (Input.Address != address)
+            //{
+            //    user.Cus_address = Input.Address;
+            //    await _userManager.UpdateAsync(user);
 
-            }
+            //}
 
 
 			//        if (Request.Form.Files.Count > 0)

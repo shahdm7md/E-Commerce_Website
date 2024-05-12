@@ -140,7 +140,7 @@ namespace testtt.Areas.Identity.Pages.Account
                     Email = Input.Email,
                     Cus_FName = Input.FirstName,
                     Cus_LName = Input.LastName,
-                    Cus_address = Input.Address,
+                    //Cus_address = Input.Address,
                 };
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);

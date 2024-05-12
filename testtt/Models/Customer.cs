@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using System.Net;
 
 namespace testtt.Models
 {
@@ -22,13 +23,16 @@ namespace testtt.Models
         //[EmailAddress]
         //public string Cus_Email { get; set; }
 
-        [Required(ErrorMessage = "Address is required.")]
-        [RegularExpression(@"^(?=.*[a-zA-Z])[a-zA-Z0-9\s.,#-]+$", ErrorMessage = "Invalid address format.")]
-        public string Cus_address { get; set; }
+        //[Required(ErrorMessage = "Address is required.")]
+        //[RegularExpression(@"^(?=.*[a-zA-Z])[a-zA-Z0-9\s.,#-]+$", ErrorMessage = "Invalid address format.")]
+        //public string Cus_address { get; set; }
 
-		// Navigation property for Orders
-		public string? Cus_ImageUrl { get; set; }
-        public virtual ICollection<Order> Orders { get; set; }
-        
-    }
+        // Navigation property for Orders
+        public string? Cus_ImageUrl { get; set; }
+		//public string Cus_phonenumber { get; set; }
+		public virtual ICollection<Order> Orders { get; set; }
+
+		public ICollection<Address> Addresses { get; set; }
+
+	}
 }

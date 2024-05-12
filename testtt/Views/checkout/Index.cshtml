@@ -91,17 +91,37 @@
 						<div class="form-group">
 							<label for="c_country" class="text-black">Country <span class="text-danger">*</span></label>
 							<select id="c_country" class="form-control">
-								<option value="1">Select a country</option>
-								<option value="2">bangladesh</option>
-								<option value="3">Algeria</option>
-								<option value="4">Afghanistan</option>
-								<option value="5">Ghana</option>
-								<option value="6">Albania</option>
-								<option value="7">Bahrain</option>
-								<option value="8">Colombia</option>
-								<option value="9">Dominican Republic</option>
+								<option value="1">اختر محافظة</option>
+								<option value="2">القاهرة</option>
+								<option value="3">الإسكندرية</option>
+								<option value="4">الجيزة</option>
+								<option value="5">المنوفية</option>
+								<option value="6">الفيوم</option>
+								<option value="7">الغربية</option>
+								<option value="8">الشرقية</option>
+								<option value="9">القليوبية</option>
+								<option value="10">الإسماعيلية</option>
+								<option value="11">الأقصر</option>
+								<option value="12">الغربية</option>
+								<option value="13">أسوان</option>
+								<option value="14">البحر الأحمر</option>
+								<option value="15">البحيرة</option>
+								<option value="16">بني سويف</option>
+								<option value="17">بورسعيد</option>
+								<option value="18">جنوب سيناء</option>
+								<option value="19">دمياط</option>
+								<option value="20">السويس</option>
+								<option value="21">سوهاج</option>
+								<option value="22">شمال سيناء</option>
+								<option value="23">قنا</option>
+								<option value="24">كفر الشيخ</option>
+								<option value="25">مطروح</option>
+								<option value="26">المنيا</option>
+								<option value="27">الوادي الجديد</option>
+								<option value="28">سيناء</option>
 							</select>
 						</div>
+
 						<div class="form-group row">
 							<div class="col-md-6">
 								<label for="c_fname" class="text-black">First Name <span class="text-danger">*</span></label>
@@ -337,7 +357,8 @@
 								</div>
 
 								<div class="form-group">
-									<button class="btn btn-black btn-lg py-3 btn-block" onclick="window.location='thankyou.html'">Place Order</button>
+									@* <button class="btn btn-black btn-lg py-3 btn-block" onclick="window.location='thankyou.cshtml'">Place Order</button> *@
+									<button id="placeOrderBtn" class="btn btn-black btn-lg py-3 btn-block">Place Order</button>
 								</div>
 
 							</div>
@@ -456,6 +477,19 @@
 	</footer>
 	<!-- End Footer Section -->
 
+	<script>
+		document.getElementById("placeOrderBtn").addEventListener("click", function () {
+			// بمجرد النقر على الزر، قم بإرسال طلب POST إلى العنوان URL المطلوب
+			var xhr = new XMLHttpRequest();
+			xhr.open("POST", "@Url.Action("PlaceOrder", "checkout")", true);
+			xhr.setRequestHeader('Content-Type', 'application/json');
+			xhr.onload = function () {
+				// بعد إرسال الطلب، قم بالانتقال إلى الصفحة "thankyou"
+				window.location.href = "thankyou";
+			};
+			xhr.send();
+		});
+	</script>
 
 	<script src="js/bootstrap.bundle.min.js"></script>
 	<script src="js/tiny-slider.js"></script>
