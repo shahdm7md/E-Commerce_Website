@@ -27,7 +27,7 @@
 
 <body>
 
-	<!-- Start Header/Navigation -->
+	@* <!-- Start Header/Navigation -->
 	<nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
 
 		<div class="container">
@@ -56,7 +56,7 @@
 			</div>
 		</div>
 
-	</nav>
+	</nav> *@
 	<!-- End Header/Navigation -->
 	<!-- Start Hero Section -->
 	<div class="hero">
@@ -76,14 +76,14 @@
 
 	<div class="untree_co-section">
 		<div class="container">
-			<div class="row mb-5">
+			@* <div class="row mb-5">
 				<div class="col-md-12">
 					<div class="border p-4 rounded" role="alert">
-						@* Returning customer? <a href="#">Click here</a> to login *@
+						@* Returning customer? <a href="#">Click here</a> to login 
 						Returning customer? <a href="@Url.Content("~/Account/Login")">Click here</a> to login
 					</div>
 				</div>
-			</div>
+			</div> *@
 			<div class="row">
 				<div class="col-md-6 mb-5 mb-md-0">
 					<h2 class="h3 mb-3 text-black">Billing Details</h2>
@@ -91,7 +91,8 @@
 						<div class="form-group">
 							<label for="c_country" class="text-black">Country <span class="text-danger">*</span></label>
 							<select id="c_country" class="form-control">
-								<option value="1">اختر محافظة</option>
+								<option value="0">اختر محافظة</option>
+								<option value="1">أسيوط</option>
 								<option value="2">القاهرة</option>
 								<option value="3">الإسكندرية</option>
 								<option value="4">الجيزة</option>
