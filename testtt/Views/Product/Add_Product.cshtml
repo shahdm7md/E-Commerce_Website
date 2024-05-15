@@ -1,14 +1,41 @@
-﻿@model testtt.Models.ViewsModels.ProductViewModel
+﻿<head>
 
-@{
-    ViewData["Title"] = "Add_Product";
-}
+    <link href="~/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="~/css/tiny-slider.css" rel="stylesheet">
+    <link href="~/css/style.css" rel="stylesheet">
+</head>
+<style>
+    .card-img-top {
+        height: 200px; /* ارتفاع الصورة */
+        object-fit: cover; /* لتغطية مساحة الصورة بالكامل داخل العنصر */
+    }
 
-<h2>@(Model.Id > 0 ? "Edit" : "Add_Product") Product</h2>
+    /* تغيير لون زر الإضافة ليكون أخضر */
+    .addToCartBtn {
+        background-color: #3B5D50; /* لون خلفية الزر */
+        border-color: #3B5D50; /* لون حدود الزر */
+    }
+
+        /* تغيير لون زر الإضافة عندما يتم التحويل عليه */
+        .addToCartBtn:hover {
+            background-color: #2E4338; /* لون خلفية الزر عند التحويل عليه */
+            border-color: #2E4338; /* لون حدود الزر عند التحويل عليه */
+        }
+</style>
+<style>
+    /* توسيط المحتوى داخل العمود */
+    .content {
+        display: flex;
+        justify-content: center; /* توسيط المحتوى أفقيًا */
+        align-items: center; /* توسيط المحتوى عموديًا */
+    }
+</style>
+@model testtt.Models.ViewsModels.ProductViewModel
 
 <hr />
 
-<section class="row justify-content-between">
+<section class="row content">
     <div class="col-md-4">
         <form method="POST" asp-action="@(Model.Id > 0 ? "Edit" : "Add_Product")" enctype="multipart/form-data">
             <input type="hidden" asp-for="Id" />

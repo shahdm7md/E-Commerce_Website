@@ -113,11 +113,11 @@ namespace testtt.Areas.Identity.Pages.Account
             [Display(Name = "Last Name")]
             public string LastName { get; set; }
 
-            [Required(ErrorMessage = "Address is required.")]
-            //[RegularExpression(@"^[A-Za-z0-9\s\,\.\-]+$", ErrorMessage = "Invalid address format.")]
-            [RegularExpression(@"^(?=.*[a-zA-Z])[a-zA-Z0-9\s.,#-]+$", ErrorMessage = "Invalid address format.")]
-            [Display(Name = "Address")]
-            public string Address { get; set; }
+            //[Required(ErrorMessage = "Address is required.")]
+            ////[RegularExpression(@"^[A-Za-z0-9\s\,\.\-]+$", ErrorMessage = "Invalid address format.")]
+            //[RegularExpression(@"^(?=.*[a-zA-Z])[a-zA-Z0-9\s.,#-]+$", ErrorMessage = "Invalid address format.")]
+            //[Display(Name = "Address")]
+            //public string Address { get; set; }
         }
 
 
