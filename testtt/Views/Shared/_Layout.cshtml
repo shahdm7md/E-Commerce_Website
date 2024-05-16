@@ -50,23 +50,32 @@
                         <li class="nav-item">
                             <a class="nav-link " asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link " asp-controller="Product" asp-action="index">Product</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " asp-controller="Roles" asp-action="index">Manage Roles</a>
+                            </li>
+                            
+                            <li class="nav-item">
+                                <a class="nav-link " asp-controller="Users" asp-action="Index">Manage Users</a>
+                            </li>
+                        }
                         <li class="nav-item">
-                            <a class="nav-link " asp-controller="Product" asp-action="index">Product</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link " asp-controller="Roles" asp-action="index">Manage Roles</a>
-                        </li>
-                        <a class="nav-link " asp-controller="Product" asp-action="UserProducts">UserProducts</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link " asp-controller="Users" asp-action="Index">Manage Users</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link " asp-controller="Cart" asp-action="Index">Carts</a>
+                            <a class="nav-link " asp-controller="Product" asp-action="UserProducts">Shop</a>
                         </li>
 
                     </ul>
-                   
+                    <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
+                        <li class="nav-item">
+                            <a class="nav-link " asp-controller="Cart" asp-action="Index">
+                                <img src="~/images/cart.svg" alt="Cart" style="width: 24px; height: 24px;">
+                            </a>
+                        </li>
+                    </ul>
+                    
                     <partial name="_LoginPartial" />
                 </div>
             </div>
