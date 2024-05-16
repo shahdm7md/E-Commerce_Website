@@ -98,7 +98,7 @@ namespace testtt.Controllers
 			if (cart == null)
 			{
 				// User does not have a cart, handle this scenario
-				return BadRequest("Cart not found for the user.");
+				return Json(new { success = false, message = "Cart not found for the user." });
 			}
 
 			var existingCartItem = _context.CartItems.FirstOrDefault(ci => ci.Cart_ID == cart.Cart_ID && ci.Prod_ID == productId);
@@ -113,12 +113,12 @@ namespace testtt.Controllers
 				_context.SaveChanges();
 
 				// Return a success response if needed
-				return Ok("Quantity updated successfully.");
+				return Json(new { success = true, message = "Quantity updated successfully." });
 			}
 			else
 			{
 				// Return an error response if the cart item is not found
-				return NotFound("Cart item not found.");
+				return Json(new { success = false, message = "Cart item not found." });
 			}
 
 		}
@@ -134,7 +134,7 @@ namespace testtt.Controllers
 			if (cart == null)
 			{
 				// User does not have a cart, handle this scenario
-				return BadRequest("Cart not found for the user.");
+				return Json(new { success = false, message = "Cart not found for the user." });
 			}
 
 			var cartItem = _context.CartItems.FirstOrDefault(ci => ci.Cart_ID == cart.Cart_ID && ci.Prod_ID == productId);
@@ -142,11 +142,11 @@ namespace testtt.Controllers
 			{
 				_context.CartItems.Remove(cartItem);
 				_context.SaveChanges();
-				return Json(new { success = true });
+				return Json(new { success = true, message = "Cart item deleted successfully." });
 			}
 			else
 			{
-				return Json(new { success = false });
+				return Json(new { success = false, message = "Cart item not found." });
 			}
 		}
 

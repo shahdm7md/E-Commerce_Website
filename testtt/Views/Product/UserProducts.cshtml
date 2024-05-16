@@ -45,7 +45,7 @@
 </h2>
 <hr />
 
-<div class="mt-4">
+<div class="container mt-4">
     @if (!Model.Any())  // لا توجد منتجات
     {
         <div class="alert alert-warning" role="alert">
@@ -84,11 +84,17 @@
                                             <form id="addToCartForm-@product.Prod_ID">
                                                 <input type="hidden" name="productId" value="@product.Prod_ID" />
 @*                                                 <button type="submit" class="btn btn-primary addToCartBtn">
-                                    *@             <button type="submit" class="btn btn-primary addToCartBtn" data-product-id="@product.Prod_ID">
+                                    *@             <button type="submit" class="btn btn-primary addToCartBtn" data-product-id="@product.Prod_ID" data-stock="@product.Prod_Stock">
                                                     <i class="bi bi-cart-dash-fill"></i>
                                                     Add to Cart
                                                 </button>
                                             </form>
+                                        }
+                                        else
+                                        {
+                                            <button type="button" class="btn btn-primary addToCartBtn" disabled>
+                                                Out of Stock
+                                            </button>
                                         }
                                     </div>
                                 </div>
@@ -165,6 +171,7 @@
                 var form = $(this).closest('form');
                 // var productId = form.find('input[name="productId"]').val();
                 var productId = $(this).data('product-id');
+                var stock = $(this).data('stock');
 
                 //var formData = form.serialize();
                 var btn = $(this);
@@ -193,7 +200,8 @@
                                 // data: formData + '&productId=' + productId,
                                 success: function () {
                                     alert(response);
-                                   // alert('Product added to cart successfully!');
+                                    //alert('Product added to cart successfully!');
+
                                 },
                                 // error: function () {
                                 //     alert('Failed to add product to cart!');

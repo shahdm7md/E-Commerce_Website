@@ -195,7 +195,7 @@ namespace testtt.Controllers
 
 		[Authorize]
 		[HttpPost]
-        public IActionResult AddToCart(int productId)
+        public IActionResult AddToCart(int productId, int quantity)
         {
             if (productId == null || productId <= 0)
                 return BadRequest("Invalid product ID");
@@ -208,6 +208,12 @@ namespace testtt.Controllers
             {
                 return NotFound("Product not found.");
             }
+            if (product.Prod_Stock <= 0 || product.Prod_Stock < quantity)
+            {
+                return BadRequest("Product is out of stock.");
+            }
+            product.Prod_Stock -= quantity;
+            //product.Prod_Stock--;
 
             // Find or create a cart for the user
             var cart = _context.Carts.FirstOrDefault(c => c.Cus_ID == user.Id);
