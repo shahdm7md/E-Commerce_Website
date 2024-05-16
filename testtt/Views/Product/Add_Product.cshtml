@@ -35,8 +35,8 @@
 
 <hr />
 
-<section class="row content">
-    <div class="col-md-4">
+<section class="row content ">
+    <div class="col-md">
         <form method="POST" asp-action="@(Model.Id > 0 ? "Edit" : "Add_Product")" enctype="multipart/form-data">
             <input type="hidden" asp-for="Id" />
             <div class="form-group w-50">
