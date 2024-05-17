@@ -37,5 +37,15 @@ namespace testtt.Models
 
         // Navigation property for Product
         public virtual Product Product { get; set; }
+        //from form
+        public string FirstName { get; set; }
+        public string SecondName { get; set; }
+        public string Country { get; set; }
+        public string Company { get; set; }
+        public string Street { get; set; }
+        public string Apartment { get; set; }
+        public string EmailAddress { get; set; }
+        public string PhoneNumber { get; set; }
+
     }
 }
