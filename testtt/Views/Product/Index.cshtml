@@ -31,9 +31,58 @@
     }
     else
     {
+        <div class="row content d-flex justify-content-center justify-content-between">
+            @foreach (var product in Model)
+            {
+                <div class="card p-3 m-3 col-4" style="width: 18rem;">
+                    <img src="@(string.Format("data:image/jpeg;base64,{0}", Convert.ToBase64String(product.Prod_Image)))" style="width: 10rem; height:13rem;" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">@product.Prod_Name</h5>
+                        <p class="card-text text-justify">@(product.Prod_Description.Length > 500 ? $"{product.Prod_Description.Substring(0, 500)}..." : product.Prod_Description)</p>
+                        <h6>Price = @product.Prod_Price $ </h6>
+                        @if (product.Prod_Stock > 0)
+                        {
+                            <h6>Stock = @product.Prod_Stock </h6>
+                        }
+                        else
+                        {
+                            <p class="text-danger">Out of Stock</p>
+                        }
+
+                        @* <a href="#" class="btn btn-primary">Go somewhere</a> *@
+
+                        <div class="d-flex justify-content-between">
+                            
+                               @*  <a asp-action="Details" asp-route-id="@product.Prod_ID" class="btn btn-outline-secondary">
+                                    <i class="bi bi-ticket-detailed"></i>
+                                    Details
+                                </a> *@
+                                <a asp-action="Edit" asp-route-id="@product.Prod_ID" class="btn btn-primary ">
+                                <div class="d-flex justify-content-center justify-content-between">
+                                    <i class="bi bi-pencil"></i>
+
+                                <span>Edit</span>
+                                </div>
+                                </a>
+                                <a href="javascript:;" class="btn btn-danger  js-delete" data-id="@product.Prod_ID">
+                                <div class="d-flex justify-content-center justify-content-between">
+                                    <i class="bi bi-trash"></i>
+                                    <span>Delete</span>
+                                </div>
+                                    
+                                </a>
+                            
+                        </div>
+                      
+                    </div>
+                </div>
+
+         
+            }
+        </div>
 
             
-            <div class="row content">
+            @* <div class="row content">
                 @foreach (var product in Model)
                 {
                     <div class="col-12">
@@ -71,7 +120,7 @@
                         </div>
                     </div>
                 }
-            </div>
+            </div> *@
             
     }
 </div>

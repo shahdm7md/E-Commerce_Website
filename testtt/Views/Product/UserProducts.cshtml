@@ -55,10 +55,47 @@
     }
     else
     {
-        <div class="row content">
+        <div class="row content d-flex justify-content-center justify-content-between">
             @foreach (var product in Model)
             {
-                <div class="col-12">
+                <div class="card p-3 m-3 col-4" style="width: 18rem;">
+                    <img src="@(string.Format("data:image/jpeg;base64,{0}", Convert.ToBase64String(product.Prod_Image)))" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">@product.Prod_Name</h5>
+                        <p class="card-text text-justify">@(product.Prod_Description.Length > 500 ? $"{product.Prod_Description.Substring(0, 500)}..." : product.Prod_Description)</p>
+                        <h6>Price = @product.Prod_Price $ </h6>
+                        @if (product.Prod_Stock > 0)
+                        {
+                            <h6>Stock = @product.Prod_Stock </h6>
+                        }
+                        else
+                        {
+                            <p class="text-danger">Out of Stock</p>
+                        }
+
+                        @* <a href="#" class="btn btn-primary">Go somewhere</a> *@
+
+                        @if (product.Prod_Stock > 0)
+                        {
+                            <form id="addToCartForm-@product.Prod_ID">
+                                <input type="hidden" name="productId" value="@product.Prod_ID" />
+@*                                 <button type="submit" class="btn btn-primary addToCartBtn">
+ *@                                    <button type="submit" class="btn btn-primary addToCartBtn" data-product-id="@product.Prod_ID" data-stock="@product.Prod_Stock">
+                                        <i class="bi bi-cart-dash-fill"></i>
+                                        Add to Cart
+                                    </button>
+                            </form>
+                        }
+                        else
+                        {
+                            <button type="button" class="btn btn-primary addToCartBtn" disabled>
+                                Out of Stock
+                            </button>
+                        }
+                    </div>
+                </div>
+
+                @* <div class="col-12">
                     <div class="card mb-3">
                         <div class="row no-gutters">
                             <div class="col-md-2 prodimage" style="background-image: url(data:image\/*;base64,@(Convert.ToBase64String(product.Prod_Image)))"></div>
@@ -83,8 +120,8 @@
                                         {
                                             <form id="addToCartForm-@product.Prod_ID">
                                                 <input type="hidden" name="productId" value="@product.Prod_ID" />
-@*                                                 <button type="submit" class="btn btn-primary addToCartBtn">
-                                    *@             <button type="submit" class="btn btn-primary addToCartBtn" data-product-id="@product.Prod_ID" data-stock="@product.Prod_Stock">
+                                                 <button type="submit" class="btn btn-primary addToCartBtn">
+                                                 <button type="submit" class="btn btn-primary addToCartBtn" data-product-id="@product.Prod_ID" data-stock="@product.Prod_Stock">
                                                     <i class="bi bi-cart-dash-fill"></i>
                                                     Add to Cart
                                                 </button>
@@ -101,7 +138,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> *@
             }
         </div>
     }
