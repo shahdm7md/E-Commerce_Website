@@ -51,7 +51,7 @@
 		</div>
 	</div>
 	<!-- End Hero Section -->
-
+	<form id="checkoutForm" />
 	<div class="untree_co-section">
 		<div class="container">
 			@* <div class="row mb-5">
@@ -62,6 +62,7 @@
 					</div>
 				</div>
 			</div> *@
+			<form id="checkoutForm">
 			<div class="row">
 				<div class="col-md-6 mb-5 mb-md-0">
 					<h2 class="h3 mb-3 text-black">Billing Details</h2>
@@ -151,7 +152,7 @@
 								<input type="text" class="form-control" id="c_phone" name="PhoneNumber" placeholder="Phone Number">
 							</div>
 						</div>
-
+			</form>
 						<div class="form-group">
 							<label for="c_create_account" class="text-black" data-bs-toggle="collapse" href="#create_an_account" role="button" aria-expanded="false" aria-controls="create_an_account"><input type="checkbox" value="1" id="c_create_account"> Create an account?</label>
 							<div class="collapse" id="create_an_account">
@@ -349,7 +350,7 @@
 			<!-- </form> -->
 		</div>
 	</div>
-
+	<form />
 	<!-- Start Footer Section -->
 	<footer class="footer-section">
 		<div class="container relative">
@@ -382,17 +383,29 @@
 	<!-- End Footer Section -->
 	<script>
 		document.getElementById("placeOrderBtn").addEventListener("click", function () {
-			// بمجرد النقر على الزر، قم بإرسال طلب POST إلى العنوان URL المطلوب
+			var form = document.getElementById("checkoutForm");
+			var formData = new FormData(form);
+
 			var xhr = new XMLHttpRequest();
 			xhr.open("POST", "@Url.Action("PlaceOrder", "checkout")", true);
 			xhr.setRequestHeader('Content-Type', 'application/json');
 			xhr.onload = function () {
-				// بعد إرسال الطلب، قم بالانتقال إلى الصفحة "thankyou"
-				window.location.href = "thankyou";
+				if (xhr.status === 200) {
+					window.location.href = "thankyou";
+				} else {
+					alert("There was an error processing your order. Please try again.");
+				}
 			};
-			xhr.send();
+
+			var object = {};
+			formData.forEach(function (value, key) {
+				object[key] = value;
+			});
+
+			xhr.send(JSON.stringify(object));
 		});
 	</script>
+
 
 	<script src="js/bootstrap.bundle.min.js"></script>
 	<script src="js/tiny-slider.js"></script>
