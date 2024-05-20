@@ -51,7 +51,7 @@
 		</div>
 	</div>
 	<!-- End Hero Section -->
-	<form id="checkoutForm" />
+
 	<div class="untree_co-section">
 		<div class="container">
 			@* <div class="row mb-5">
@@ -62,7 +62,7 @@
 					</div>
 				</div>
 			</div> *@
-			<form id="checkoutForm">
+			<form id="checkoutForm" asp-action="PlaceOrder" asp-controller="Checkout" method="post">
 			<div class="row">
 				<div class="col-md-6 mb-5 mb-md-0">
 					<h2 class="h3 mb-3 text-black">Billing Details</h2>
@@ -151,6 +151,10 @@
 								<label for="c_phone" class="text-black">Phone <span class="text-danger">*</span></label>
 								<input type="text" class="form-control" id="c_phone" name="PhoneNumber" placeholder="Phone Number">
 							</div>
+															<div class="form-group">
+									@* <button class="btn btn-black btn-lg py-3 btn-block" onclick="window.location='thankyou.cshtml'">Place Order</button> *@
+						<button type="submit" id="placeOrderBtn" class="btn btn-black btn-lg py-3 btn-block" asp-action="PlaceOrder" asp-controller="Checkout">Place Order</button>
+								</div>
 						</div>
 			</form>
 						<div class="form-group">
@@ -336,10 +340,7 @@
 									</div>
 								</div>
 
-								<div class="form-group">
-									@* <button class="btn btn-black btn-lg py-3 btn-block" onclick="window.location='thankyou.cshtml'">Place Order</button> *@
-									<button id="placeOrderBtn" class="btn btn-black btn-lg py-3 btn-block">Place Order</button>
-								</div>
+
 
 							</div>
 						</div>
@@ -350,7 +351,7 @@
 			<!-- </form> -->
 		</div>
 	</div>
-	<form />
+
 	<!-- Start Footer Section -->
 	<footer class="footer-section">
 		<div class="container relative">
@@ -381,7 +382,7 @@
 		</div>
 	</footer>
 	<!-- End Footer Section -->
-	<script>
+@* 	<script>
 		document.getElementById("placeOrderBtn").addEventListener("click", function () {
 			var form = document.getElementById("checkoutForm");
 			var formData = new FormData(form);
@@ -404,7 +405,7 @@
 
 			xhr.send(JSON.stringify(object));
 		});
-	</script>
+	</script> *@
 
 
 	<script src="js/bootstrap.bundle.min.js"></script>

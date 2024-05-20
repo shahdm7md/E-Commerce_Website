@@ -100,10 +100,12 @@ namespace testtt.Controllers
 
 				// Add order details to the database
 				_context.OrderDetails.Add(orderDetail);
+				await _context.SaveChangesAsync();
 			}
 
 			// Remove cart items
 			_context.CartItems.RemoveRange(userCart.CartItems);
+			_context.Carts.Remove(userCart);
 			userCart.Total = 0;
 			await _context.SaveChangesAsync();
 
