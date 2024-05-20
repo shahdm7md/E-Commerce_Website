@@ -108,7 +108,7 @@ namespace testtt.Controllers
         //}
         [Authorize]
         [HttpPost]
-        public IActionResult PlaceOrder(OrderDetail orderDetail)
+        public IActionResult PlaceOrder(Cart cart, OrderDetail checkoutForm)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
@@ -123,50 +123,49 @@ namespace testtt.Controllers
                 // Handle the scenario where the user's cart is empty
                 return RedirectToAction("Index", "Cart");
             }
-
-            // Create an Order object
+            // Create a new order object
             var order = new Order
             {
                 Order_date = DateTime.Now,
-                Order_Status = "Pending", // You may change this as needed
+                Order_Status = "Pending", // Set the order status here as needed
                 Total_amount = userCart.Total,
-                Cus_ID = userId // Set the customer ID
+                Shipping_address = checkoutForm.Street + ", " + checkoutForm.Apartment + ", " + checkoutForm.Country, // Set the shipping address based on the data received from the checkout form
+                Cus_ID = userId // You can use the customer's email as an identifier here, but it's better to use a real customer ID if available
             };
 
-            // Add the order to the context
+            // Add the order to the database
             _context.Orders.Add(order);
             _context.SaveChanges();
 
-            // Create OrderDetail objects
+            // Create order details
             foreach (var cartItem in userCart.CartItems)
             {
-                var newOrderDetail = new OrderDetail
+                var orderDetail = new OrderDetail
                 {
                     Quantity = cartItem.Quantity,
-                    /*Unit_price = cartItem.Product.Price,*/ // Assuming Product has a Price property
+                    //Unit_price = cartItem.Product.Price,
+                    //Discount_rate = cartItem.Discount,
                     Sub_Total = cartItem.Sub_total,
-                    Order_ID = order.Order_ID, // Set the order ID
-                    Prod_ID = cartItem.Product.Prod_ID, // Set the product ID
-                    FirstName = orderDetail.FirstName,
-                    SecondName = orderDetail.SecondName,
-                    Country = orderDetail.Country,
-                    Company = orderDetail.Company,
-                    Street = orderDetail.Street,
-                    Apartment = orderDetail.Apartment,
-                    EmailAddress = orderDetail.EmailAddress,
-                    PhoneNumber = orderDetail.PhoneNumber
+                    Order_ID = order.Order_ID,
+                    Prod_ID = cartItem.Product.Prod_ID,
+                    FirstName = checkoutForm.FirstName, // Use data from the checkout form
+                    SecondName = checkoutForm.SecondName,
+                    EmailAddress = checkoutForm.EmailAddress,
+                    PhoneNumber = checkoutForm.PhoneNumber,
+                    Country = checkoutForm.Country,
+                    Apartment = checkoutForm.Apartment,
+                    Street = checkoutForm.Street,
+                    Company = checkoutForm.Company
+
                 };
 
-                // Add the order detail to the context
-                _context.OrderDetails.Add(newOrderDetail);
+                // Add order details to the database
+                _context.OrderDetails.Add(orderDetail);
             }
-
             // Remove cart items
             _context.CartItems.RemoveRange(userCart.CartItems);
             userCart.Total = 0;
-            _context.SaveChanges();
-
-            // Redirect to a confirmation page or display a success message
+            _context.SaveChanges(); // Save changes
             return RedirectToAction("thankyou");
         }
 
