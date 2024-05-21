@@ -89,7 +89,7 @@
 												<div class="input-group-prepend">
 													<button class="btn btn-outline-black decrease" type="button" data-product-id="@products.Product.Prod_ID">&minus;</button>
 												</div>
-												<input type="text" class="form-control text-center quantity-amount" value="@products.CartItem.Quantity" data-product-id="@products.Product.Prod_ID" readonly>
+												<input type="text" class="form-control text-center quantity-amount" value="@products.CartItem.Quantity" data-product-id="@products.Product.Prod_ID" data-stock="@products.Product.Prod_Stock + @products.CartItem.Quantity" data-original-stock="@products.Product.Prod_Stock" readonly>
 												<div class="input-group-append">
 													<button class="btn btn-outline-black increase" type="button" data-product-id="@products.Product.Prod_ID">&plus;</button>
 												</div>
@@ -120,7 +120,7 @@
 							@* <button class="btn btn-outline-black btn-sm btn-block">Continue Shopping</button> *@
 						</div>
 					</div>
-					<div class="row">
+					@* <div class="row">
 						<div class="col-md-12">
 							<label class="text-black h4" for="coupon">Coupon</label>
 							<p>Enter your coupon code if you have one.</p>
@@ -131,7 +131,7 @@
 						<div class="col-md-4">
 							<button class="btn btn-black">Apply Coupon</button>
 						</div>
-					</div>
+					</div> *@
 				</div>
 				<div class="col-md-6 pl-5">
 					<div class="row justify-content-end">
@@ -232,39 +232,79 @@
 			var newValue = parseInt(input.val());
 			var stock = parseInt(input.data('stock'));
 
-			if (newValue > 0) {
-				input.val(newValue);
-				updateQuantity(productId, newValue);
+			var originalStock = parseInt(input.data('original-stock'));
+			var currentQuantity = parseInt(input.val());
+			var newQuantity = currentQuantity ;
+
+			// if (newValue > 0 && newValue<= stock) {
+			// 	input.val(newValue);
+			// 	updateQuantity(productId, newValue);
+			// }
+
+			if (newQuantity > 0 && newQuantity <= stock) {
+				input.val(newQuantity);
+				var originalQuantity = currentQuantity; 
+				updateQuantity(productId, newQuantity, originalQuantity, button);
+			} 
+			else if (newQuantity >= stock ) {
+				//updateQuantity(productId, newQuantity, originalQuantity, button);
+				alert('Requested quantity exceeds available stock.');
+			}
+			else if (newQuantity <= 0) {
+				//updateQuantity(productId, newQuantity, originalQuantity, button);
+				alert('Quantity must be at least 1.');
 			}
 		}
 
-		// Increase quantity
+		
 		$('.increase').on('click', function () {
 			changeQuantity(this, 1);
 		});
 
-		// Decrease quantity
+		
 		$('.decrease').on('click', function () {
 			changeQuantity(this, -1);
 		});
 
-		// Function to update the quantity using AJAX and update the UI
-		function updateQuantity(productId, quantity) {
+		// using AJAX 
+		function updateQuantity(productId, quantity, originalQuantity, button) {
+			//var quantityDifference = quantity - originalQuantity;
+
 			$.ajax({
 				url: '@Url.Action("UpdateQuantity", "Cart")',
 				type: 'POST',
-				data: { productId: productId, quantity: quantity },
+				data: { productId: productId, quantity: quantity},
 				success: function (response) {
 					if (response.success) {
-						// Update the subtotal for the product
+						
 						var row = $('tr[data-product-id="' + productId + '"]');
 						var price = parseFloat(row.find('.product-price').text());
 						var subtotal = price * quantity;
 						row.find('.product-total').text(subtotal.toFixed(2));
+						row.find('.quantity-amount').val(quantity);
 
-						// Update the total for the cart
+						
 						updateCartTotal();
-					} else {
+
+						var stock = parseInt(row.find('.quantity-amount').data('stock'));
+						//var originalStock = parseInt(row.find('.quantity-amount').data('original-stock'));
+
+						var increaseButton = row.find('.increase');
+						var decreaseButton = row.find('.decrease');
+
+						if (quantity >= stock ) {
+							increaseButton.prop('disabled', true);
+						} else {
+							increaseButton.prop('disabled', false);
+						}
+
+						if (quantity <= 1) {
+							decreaseButton.prop('disabled', true);
+						} else {
+							decreaseButton.prop('disabled', false);
+						}
+					} 
+					else {
 						alert(response.message);
 					}
 				},

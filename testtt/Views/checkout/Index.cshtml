@@ -151,10 +151,7 @@
 								<label for="c_phone" class="text-black">Phone <span class="text-danger">*</span></label>
 								<input type="text" class="form-control" id="c_phone" name="PhoneNumber" placeholder="Phone Number">
 							</div>
-															<div class="form-group">
-									@* <button class="btn btn-black btn-lg py-3 btn-block" onclick="window.location='thankyou.cshtml'">Place Order</button> *@
-						<button type="submit" id="placeOrderBtn" class="btn btn-black btn-lg py-3 btn-block" asp-action="PlaceOrder" asp-controller="Checkout">Place Order</button>
-								</div>
+															
 						</div>
 			</form>
 						<div class="form-group">
@@ -341,6 +338,10 @@
 								</div>
 
 
+								<div class="form-group">
+									@* <button class="btn btn-black btn-lg py-3 btn-block" onclick="window.location='thankyou.cshtml'">Place Order</button> *@
+									<button type="submit" id="placeOrderBtn" class="btn btn-black btn-lg py-3 btn-block" asp-action="PlaceOrder" asp-controller="Checkout">Place Order</button>
+								</div>
 
 							</div>
 						</div>

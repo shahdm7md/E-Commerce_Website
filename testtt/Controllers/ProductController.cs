@@ -198,7 +198,7 @@ namespace testtt.Controllers
         public IActionResult AddToCart(int productId, int quantity)
         {
             if (productId == null || productId <= 0)
-                return BadRequest("Invalid product ID");
+                return Json(new { success = false, message = "Invalid product ID" });
 
             // Get the currently logged-in user
             var user = _userManager.GetUserAsync(User).Result;
@@ -206,13 +206,13 @@ namespace testtt.Controllers
 			var product = _context.Products.FirstOrDefault(p => p.Prod_ID == productId);
             if (product == null)
             {
-                return NotFound("Product not found.");
+                return Json(new { success = false, message = "Product not found." });
             }
             if (product.Prod_Stock <= 0 || product.Prod_Stock < quantity)
             {
-                return BadRequest("Product is out of stock.");
+                return Json(new { success = false, message = "Product is out of stock." });
             }
-            product.Prod_Stock -= quantity;
+            //product.Prod_Stock --;
             //product.Prod_Stock--;
 
             // Find or create a cart for the user
@@ -231,6 +231,7 @@ namespace testtt.Controllers
                 // If the product is already in the cart, increase the quantity
                 existingCartItem.Quantity++;
                 existingCartItem.Sub_total = existingCartItem.Quantity * existingCartItem.Unit_price;
+                product.Prod_Stock--;
                 
             }
             else
@@ -247,7 +248,8 @@ namespace testtt.Controllers
                     Sub_total = product.Prod_Price
                 };
                 _context.CartItems.Add(newCartItem);
-            }
+				product.Prod_Stock--;
+			}
 
             //cart.Total = _context.CartItems.Where(ci => ci.Cart_ID == cart.Cart_ID).Sum(ci => ci.Sub_total);
 
@@ -255,7 +257,7 @@ namespace testtt.Controllers
             _context.SaveChanges();
 
             _toastNotification.AddSuccessToastMessage("Product Added to cart Successfully");
-            return RedirectToAction( "UserProducts", "Product");
+            return Json(new { success = true, stock = product.Prod_Stock });
         }
 
 

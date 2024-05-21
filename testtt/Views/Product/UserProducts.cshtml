@@ -66,7 +66,7 @@
                         <h6>Price = @product.Prod_Price $ </h6>
                         @if (product.Prod_Stock > 0)
                         {
-                            <h6>Stock = @product.Prod_Stock </h6>
+                            <h6 data-product-id="@product.Prod_ID">Stock = @product.Prod_Stock </h6>
                         }
                         else
                         {
@@ -208,7 +208,7 @@
                 var form = $(this).closest('form');
                 // var productId = form.find('input[name="productId"]').val();
                 var productId = $(this).data('product-id');
-                var stock = $(this).data('stock');
+                var stockElement = $('h6[data-product-id="' + productId + '"]');
 
                 //var formData = form.serialize();
                 var btn = $(this);
@@ -235,17 +235,28 @@
                                 type: 'POST',
                                 data: { productId: productId },
                                 // data: formData + '&productId=' + productId,
-                                success: function () {
-                                    alert(response);
+                                success: function (response) {
+                                    //alert(response);
                                     //alert('Product added to cart successfully!');
-
+                                    if (response.success) {
+                                        //bootbox.alert('Product added to cart successfully!');
+                                        alert(response);
+                                        if (response.stock > 0) {
+                                            stockElement.text('Stock = ' + response.stock);
+                                        } else {
+                                            stockElement.replaceWith('<p class="text-danger">Out of Stock</p>');
+                                            $('button[data-product-id="' + productId + '"]').prop('disabled', true).text('Out of Stock');
+                                        }
+                                    } else {
+                                        bootbox.alert(response.message);
+                                    }
                                 },
                                 // error: function () {
                                 //     alert('Failed to add product to cart!');
                                 // }
                                 error: function (xhr, status, error) {
                                     var errorMessage = xhr.status + ': ' + xhr.statusText;
-                                    alert('Failed to add product to cart! Error: ' + errorMessage);
+                                    bootbox.alert('Failed to add product to cart! Error: ' + errorMessage);
                                 }
                             });
                         }

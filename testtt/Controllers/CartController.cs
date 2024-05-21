@@ -67,7 +67,8 @@ namespace testtt.Controllers
 
 					total += cartItem.Sub_total;
 				}
-			}
+                userCart.Total = total;
+            }
 			//else
 			//{
 			//	viewModel.Products = new List<Product>(); // If userCart is null, provide an empty list of products
@@ -79,7 +80,7 @@ namespace testtt.Controllers
 			//var cartitems = _context.CartItems.Include(c=>c.Product).Include(c=>c.Cart);
 			//         viewModel.CartItems = cartitems;
 
-			userCart.Total = total;
+			//userCart.Total = total;
 			_context.SaveChanges();
 
 			return View(cartItemViewModels);
@@ -102,27 +103,40 @@ namespace testtt.Controllers
 			}
 
 			var existingCartItem = _context.CartItems.FirstOrDefault(ci => ci.Cart_ID == cart.Cart_ID && ci.Prod_ID == productId);
+			var product = _context.Products.FirstOrDefault(p => p.Prod_ID == productId);
 
-			if (existingCartItem != null)
+			
+
+			if (existingCartItem != null && product != null)
 			{
-				// Update the quantity of the cart item
-				existingCartItem.Quantity = quantity;
-				existingCartItem.Sub_total = quantity * existingCartItem.Unit_price;
+				var originalStock = product.Prod_Stock + existingCartItem.Quantity;
 
-				// Save changes to the database
-				_context.SaveChanges();
+				if (quantity > 0 && quantity <= originalStock)
+				{
+					var quantityDifference = quantity - existingCartItem.Quantity;
+					existingCartItem.Quantity = quantity;
+					existingCartItem.Sub_total = quantity * existingCartItem.Unit_price;
 
-				// Return a success response if needed
-				return Json(new { success = true, message = "Quantity updated successfully." });
+					var stockChange = quantityDifference;
+					product.Prod_Stock -= stockChange;
+
+					_context.SaveChanges();
+
+					return Json(new { success = true, message = "Quantity updated successfully." });
+				}
+				else
+				{
+					return Json(new { success = false, message = "Requested quantity exceeds available stock." });
+				}
 			}
 			else
 			{
-				// Return an error response if the cart item is not found
 				return Json(new { success = false, message = "Cart item not found." });
 			}
 
 		}
-        [Authorize]
+
+		[Authorize]
         [HttpPost]
 		[Authorize]
 		[HttpDelete]
