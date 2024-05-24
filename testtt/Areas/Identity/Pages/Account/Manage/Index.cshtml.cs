@@ -78,9 +78,9 @@ namespace testtt.Areas.Identity.Pages.Account.Manage
             [Display(Name = "")]
             public string? Cus_ImageUrl { get; set; }
 
-            [Required(ErrorMessage = "Address is required.")]
-            [RegularExpression(@"^(?=.*[a-zA-Z])[a-zA-Z0-9\s.,#-]+$", ErrorMessage = "Invalid address format.")]
-            public string Address { get; set; }
+            //[Required(ErrorMessage = "Address is required.")]
+            //[RegularExpression(@"^(?=.*[a-zA-Z])[a-zA-Z0-9\s.,#-]+$", ErrorMessage = "Invalid address format.")]
+            //public string Address { get; set; }
         }
 
         private async Task LoadAsync(Customer user)
