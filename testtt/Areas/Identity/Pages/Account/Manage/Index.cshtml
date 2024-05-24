@@ -43,7 +43,7 @@
             <label asp-for="Input.Cus_ImageUrl" class="w-100"></label>
                 @if (Model.Input.Cus_ImageUrl != null)
                 {
-                    <img id="profilepicture" alt="" src="@Url.Content($"~/images/{Model.Input.Cus_ImageUrl}")"  style="border-radius:50%; width:70px;height:70px" />
+                    <img id="profilepicture" alt="" src="@Url.Content($"~/images/{Model.Input.Cus_ImageUrl}")"  style="border-radius:50%; width:100px;height:100px" />
                 }
                 else
                 {

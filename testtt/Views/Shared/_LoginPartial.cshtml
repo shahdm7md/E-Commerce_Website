@@ -1,37 +1,50 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<Customer> SignInManager
 @inject UserManager<Customer> UserManager
+@inject IWebHostEnvironment WebHostEnvironment
 
 <ul class="navbar-nav">
-   
-@if (SignInManager.IsSignedIn(User))
-{
-        @* var userImageUrl = UserManager.GetUserAsync(User).Result.Cus_ImageUrl;
-      
-        @if (userImageUrl != null)
-        {
+    @if (SignInManager.IsSignedIn(User))
+    {
+        var user = UserManager.GetUserAsync(User).Result;
+        var userImageUrl = user?.Cus_ImageUrl;
 
+        string userImagePath = null;
+        if (!string.IsNullOrEmpty(userImageUrl))
+        {
+            // Assuming userImageUrl contains the file name
+            userImagePath = WebHostEnvironment.WebRootPath + "/images/" + userImageUrl;
+        }
+
+        if (!string.IsNullOrEmpty(userImagePath) && System.IO.File.Exists(userImagePath))
+        {
             <li class="nav-item">
-                <img class="avatar rounded-circle" alt=" " src="@Url.Content(userImageUrl)" style="border-radius: 50%; width: 70px; height: 70px;" />
+                <img class="avatar rounded-circle" alt="User Image" src="~/images/@userImageUrl" style="border-radius: 50%; width: 50px; height: 50px;" />
+            </li>
+        }
+       @*  else
+        {
+            <li class="nav-item">
+                <img class="avatar rounded-circle" alt="Default Image" src="~/images/default.jpg" style="border-radius: 50%; width: 70px; height: 70px;" />
             </li>
         } *@
-    <li class="nav-item">
-        <a  class="nav-link " asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name ! </a>
-    </li>
-    <li class="nav-item">
-        <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button type="submit" class="nav-link btn btn-white-outline text-white ">Logout</button>
-               
-        </form>
-    </li>
-}
-else
-{
-    <li class="nav-item">
-            <a class="nav-link btn btn-white-outline text-white " asp-area="Identity" asp-page="/Account/Register">Register</a>
-    </li>
-    <li class="nav-item">
-            <a class="nav-link btn btn-white-outline text-white " asp-area="Identity" asp-page="/Account/Login">Login</a>
-    </li>
-}
+
+        <li class="nav-item">
+            <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
+        </li>
+        <li class="nav-item">
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button type="submit" class="nav-link btn btn-white-outline text-white">Logout</button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link btn btn-white-outline text-white" asp-area="Identity" asp-page="/Account/Register">Register</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link btn btn-white-outline text-white" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        </li>
+    }
 </ul>

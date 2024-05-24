@@ -98,30 +98,30 @@
 							<div class="form-group row">
 								<div class="col-md-6">
 									<label for="c_fname" class="text-black">First Name <span class="text-danger">*</span></label>
-									<input type="text" class="form-control" id="c_fname" name="FirstName">
+									<input type="text" class="form-control" id="c_fname" name="FirstName" required>
 								</div>
 								<div class="col-md-6">
 									<label for="c_lname" class="text-black">Last Name <span class="text-danger">*</span></label>
-									<input type="text" class="form-control" id="c_lname" name="SecondName">
+									<input type="text" class="form-control" id="c_lname" name="SecondName" required>
 								</div>
 							</div>
 
 							<div class="form-group row">
 								<div class="col-md-12">
 									<label for="c_companyname" class="text-black">Company Name </label>
-									<input type="text" class="form-control" id="c_companyname" name="Company">
+									<input type="text" class="form-control" id="c_companyname" name="Company" required>
 								</div>
 							</div>
 
 							<div class="form-group row">
 								<div class="col-md-12">
 									<label for="c_address" class="text-black">Address <span class="text-danger">*</span></label>
-									<input type="text" class="form-control" id="c_address" name="Street" placeholder="Street address">
+									<input type="text" class="form-control" id="c_address" name="Street" placeholder="Street address" required>
 								</div>
 							</div>
 
 							<div class="form-group mt-3">
-								<input type="text" class="form-control" name="Apartment" placeholder="Apartment, suite, unit etc. (optional)">
+								<input type="text" class="form-control" name="Apartment" placeholder="Apartment, suite, unit etc. (optional)" required>
 							</div>
 
 
@@ -129,12 +129,14 @@
 							<div class="form-group row mb-5">
 								<div class="col-md-6">
 									<label for="c_email_address" class="text-black">Email Address <span class="text-danger">*</span></label>
-									<input type="text" class="form-control" id="c_email_address" name="EmailAddress">
+									<input type="email" class="form-control" id="c_email_address" name="EmailAddress" required>
 								</div>
+
 								<div class="col-md-6">
 									<label for="c_phone" class="text-black">Phone <span class="text-danger">*</span></label>
-									<input type="text" class="form-control" id="c_phone" name="PhoneNumber" placeholder="Phone Number">
+									<input type="text" class="form-control" id="c_phone" name="PhoneNumber" placeholder="Phone Number" pattern="[0-9]+" title="Please enter numbers only" required>
 								</div>
+
 								<div class="col-md-6">
 									<label for="paymentMethod" class="text-black">Payment Method <span class="text-danger">*</span></label>
 									<div>
@@ -218,48 +220,31 @@
 											<div id="visaFields" style="display: none;">
 												<div class="form-group row">
 													<div class="col-md-12">
-														<label for="c_companyname" class="text-black">Card Name </label>
-														<input type="text" class="form-control">
+														<label for="c_companyname" class="text-black">Card Name <span class="text-danger">*</span></label>
+														<input type="text" id="c_companyname" class="form-control" pattern="[a-zA-Z]+" title="Please enter alphabetic characters only">
 													</div>
+
 												</div>
+
 												<div class="form-group row">
-													@* <div class="col-md-6">
-													<label for="c_fname" class="text-black">End Date <span class="text-danger">*</span></label>
-													<input type="text" class="form-control"  >
-													</div> *@
 													<div class="col-md-6">
-														<label for="c_end_date" class="text-black">End Date <span class="text-danger"></span></label>
-														<input type="date" id="c_end_date" class="form-control" required>
+														<label for="c_end_date" class="text-black">End Date <span class="text-danger">*</span></label>
+														<input type="date" id="c_end_date" class="form-control">
 													</div>
-
-													<script>
-														document.addEventListener("DOMContentLoaded", function () {
-															var today = new Date().toISOString().split('T')[0];
-															document.getElementById('c_end_date').setAttribute('min', today);
-														});
-													</script>
-													@* <div class="col-md-6">
-													<label for="c_lname" class="text-black">Secuirty Code <span class="text-danger">*</span></label>
-													<input type="text" class="form-control">
-													</div> *@
 													<div class="col-md-6">
-														<label for="c_security_code" class="text-black">Security Code <span class="text-danger"></span></label>
-														<input type="text" id="c_security_code" class="form-control" maxlength="3" pattern="\d{3}" required>
+														<label for="c_security_code" class="text-black">Security Code <span class="text-danger">*</span></label>
+														<input type="text" id="c_security_code" class="form-control" maxlength="3" pattern="\d{3}">
 													</div>
-
 												</div>
 
 												<div class="form-group row">
 													<div class="col-md-12">
-														<label for="c_address" class="text-black">Card Number <span class="text-danger"></span></label>
-														<input type="text" class="form-control">
+														<label for="c_address" class="text-black">Card Number <span class="text-danger">*</span></label>
+														<input type="text" id="c_address" class="form-control" pattern="[0-9]{16}" title="Please enter 16 digits" >
 													</div>
 												</div>
 
-
-
 											</div>
-
 										</div>
 
 									</div>
@@ -341,7 +326,7 @@
 	<script src="js/tiny-slider.js"></script>
 	<script src="js/custom.js"></script>
 	
-
+@* 
 	<script>
 		document.addEventListener("DOMContentLoaded", function () {
 			var visaFields = document.getElementById('visaFields');
@@ -377,9 +362,74 @@
 				return cardNumber.trim() !== '' && expiryDate.trim() !== '';
 			}
 		});
+
+	</script> *@
+@* 
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			var today = new Date().toISOString().split('T')[0];
+			document.getElementById('c_end_date').setAttribute('min', today);
+
+			var paymentMethodElements = document.getElementsByName('PaymentMethod');
+			var cardFields = ['c_companyname', 'c_end_date', 'c_security_code', 'c_address'];
+
+			function updateRequiredAttributes() {
+				var selectedPaymentMethod = document.querySelector('input[name="PaymentMethod"]:checked').value;
+				var isVisa = selectedPaymentMethod === 'Visa';
+				cardFields.forEach(function (id) {
+					var field = document.getElementById(id);
+					if (isVisa) {
+						field.setAttribute('required', 'required');
+					} else {
+						field.removeAttribute('required');
+					}
+				});
+			}
+
+			paymentMethodElements.forEach(function (element) {
+				element.addEventListener('change', updateRequiredAttributes);
+			});
+
+			// Initial check on page load
+			if (document.querySelector('input[name="PaymentMethod"]:checked')) {
+				updateRequiredAttributes();
+			}
+		});
+	</script> *@
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			var today = new Date().toISOString().split('T')[0];
+			document.getElementById('c_end_date').setAttribute('min', today);
+
+			var paymentMethodElements = document.getElementsByName('PaymentMethod');
+			var visaFields = document.getElementById('visaFields');
+			var cardFields = ['c_companyname', 'c_end_date', 'c_security_code', 'c_address'];
+
+			function updateRequiredAttributes() {
+				var selectedPaymentMethod = document.querySelector('input[name="PaymentMethod"]:checked').value;
+				var isVisa = selectedPaymentMethod === 'Visa';
+				cardFields.forEach(function (id) {
+					var field = document.getElementById(id);
+					if (isVisa) {
+						field.setAttribute('required', 'required', 'required', 'required');
+					} else {
+						field.removeAttribute('required');
+					}
+				});
+				visaFields.style.display = isVisa ? 'block' : 'none';
+			}
+
+
+			paymentMethodElements.forEach(function (element) {
+				element.addEventListener('change', updateRequiredAttributes);
+			});
+
+			// Initial check on page load
+			if (document.querySelector('input[name="PaymentMethod"]:checked')) {
+				updateRequiredAttributes();
+			}
+		});
 	</script>
-
-
 </body>
 
 </html>
