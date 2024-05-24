@@ -105,13 +105,19 @@ namespace testtt.Controllers
 			var existingCartItem = _context.CartItems.FirstOrDefault(ci => ci.Cart_ID == cart.Cart_ID && ci.Prod_ID == productId);
 			var product = _context.Products.FirstOrDefault(p => p.Prod_ID == productId);
 
-			
-
 			if (existingCartItem != null && product != null)
 			{
 				var originalStock = product.Prod_Stock + existingCartItem.Quantity;
 
-				if (quantity > 0 && quantity <= originalStock)
+				if (quantity <= 0)
+				{
+					return Json(new { success = false, message = "Quantity must be greater than 0." });
+				}
+				else if (quantity > originalStock)
+				{
+					return Json(new { success = false, message = "Requested quantity exceeds available stock." });
+				}
+				else
 				{
 					var quantityDifference = quantity - existingCartItem.Quantity;
 					existingCartItem.Quantity = quantity;
@@ -122,12 +128,25 @@ namespace testtt.Controllers
 
 					_context.SaveChanges();
 
-					return Json(new { success = true, message = "Quantity updated successfully." });
+					return Json(new { success = true });
 				}
-				else
-				{
-					return Json(new { success = false, message = "Requested quantity exceeds available stock." });
-				}
+				//if (quantity > 0 && quantity <= originalStock)
+				//{
+				//	var quantityDifference = quantity - existingCartItem.Quantity;
+				//	existingCartItem.Quantity = quantity;
+				//	existingCartItem.Sub_total = quantity * existingCartItem.Unit_price;
+
+				//	var stockChange = quantityDifference;
+				//	product.Prod_Stock -= stockChange;
+
+				//	_context.SaveChanges();
+
+				//	return Json(new { success = true});
+				//}
+				//else
+				//{
+				//	return Json(new { success = false});
+				//}
 			}
 			else
 			{
@@ -144,6 +163,8 @@ namespace testtt.Controllers
 		{
 			var user = _userManager.GetUserAsync(User).Result;
 
+			var product = _context.Products.FirstOrDefault(p => p.Prod_ID == productId);
+
 			var cart = _context.Carts.FirstOrDefault(c => c.Cus_ID == user.Id);
 			if (cart == null)
 			{
@@ -154,7 +175,9 @@ namespace testtt.Controllers
 			var cartItem = _context.CartItems.FirstOrDefault(ci => ci.Cart_ID == cart.Cart_ID && ci.Prod_ID == productId);
 			if (cartItem != null)
 			{
+				product.Prod_Stock = product.Prod_Stock + cartItem.Quantity;
 				_context.CartItems.Remove(cartItem);
+				
 				_context.SaveChanges();
 				return Json(new { success = true, message = "Cart item deleted successfully." });
 			}

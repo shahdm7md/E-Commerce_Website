@@ -54,87 +54,87 @@
 
 	<div class="untree_co-section">
 		<div class="container">
-		
+
 			<form id="checkoutForm" asp-action="PlaceOrder" asp-controller="Checkout" method="post">
-			<div class="row">
-				<div class="col-md-6 mb-5 mb-md-0">
-					<h2 class="h3 mb-3 text-black">Billing Details</h2>
-					<div class="p-3 p-lg-5 border bg-white">
-						<div class="form-group">
-							<label for="c_country" class="text-black">Country <span class="text-danger">*</span></label>
-							<select id="c_country" name="Country" class="form-control">
-								<option value="0">اختر محافظة</option>
-								<option value="1">أسيوط</option>
-								<option value="2">القاهرة</option>
-								<option value="3">الإسكندرية</option>
-								<option value="4">الجيزة</option>
-								<option value="5">المنوفية</option>
-								<option value="6">الفيوم</option>
-								<option value="7">الغربية</option>
-								<option value="8">الشرقية</option>
-								<option value="9">القليوبية</option>
-								<option value="10">الإسماعيلية</option>
-								<option value="11">الأقصر</option>
-								<option value="12">الغربية</option>
-								<option value="13">أسوان</option>
-								<option value="14">البحر الأحمر</option>
-								<option value="15">البحيرة</option>
-								<option value="16">بني سويف</option>
-								<option value="17">بورسعيد</option>
-								<option value="18">جنوب سيناء</option>
-								<option value="19">دمياط</option>
-								<option value="20">السويس</option>
-								<option value="21">سوهاج</option>
-								<option value="22">شمال سيناء</option>
-								<option value="23">قنا</option>
-								<option value="24">كفر الشيخ</option>
-								<option value="25">مطروح</option>
-								<option value="26">المنيا</option>
-								<option value="27">الوادي الجديد</option>
-								<option value="28">سيناء</option>
-							</select>
-						</div>
-
-						<div class="form-group row">
-							<div class="col-md-6">
-								<label for="c_fname" class="text-black">First Name <span class="text-danger">*</span></label>
-								<input type="text" class="form-control" id="c_fname" name="FirstName">
+				<div class="row">
+					<div class="col-md-6 mb-5 mb-md-0">
+						<h2 class="h3 mb-3 text-black">Billing Details</h2>
+						<div class="p-3 p-lg-5 border bg-white">
+							<div class="form-group">
+								<label for="c_country" class="text-black">Country <span class="text-danger">*</span></label>
+								<select id="c_country" name="Country" class="form-control">
+									<option value="0">اختر محافظة</option>
+									<option value="1">أسيوط</option>
+									<option value="2">القاهرة</option>
+									<option value="3">الإسكندرية</option>
+									<option value="4">الجيزة</option>
+									<option value="5">المنوفية</option>
+									<option value="6">الفيوم</option>
+									<option value="7">الغربية</option>
+									<option value="8">الشرقية</option>
+									<option value="9">القليوبية</option>
+									<option value="10">الإسماعيلية</option>
+									<option value="11">الأقصر</option>
+									<option value="12">الغربية</option>
+									<option value="13">أسوان</option>
+									<option value="14">البحر الأحمر</option>
+									<option value="15">البحيرة</option>
+									<option value="16">بني سويف</option>
+									<option value="17">بورسعيد</option>
+									<option value="18">جنوب سيناء</option>
+									<option value="19">دمياط</option>
+									<option value="20">السويس</option>
+									<option value="21">سوهاج</option>
+									<option value="22">شمال سيناء</option>
+									<option value="23">قنا</option>
+									<option value="24">كفر الشيخ</option>
+									<option value="25">مطروح</option>
+									<option value="26">المنيا</option>
+									<option value="27">الوادي الجديد</option>
+									<option value="28">سيناء</option>
+								</select>
 							</div>
-							<div class="col-md-6">
-								<label for="c_lname" class="text-black">Last Name <span class="text-danger">*</span></label>
-								<input type="text" class="form-control" id="c_lname" name="SecondName">
-							</div>
-						</div>
 
-						<div class="form-group row">
-							<div class="col-md-12">
-								<label for="c_companyname" class="text-black">Company Name </label>
-								<input type="text" class="form-control" id="c_companyname" name="Company">
+							<div class="form-group row">
+								<div class="col-md-6">
+									<label for="c_fname" class="text-black">First Name <span class="text-danger">*</span></label>
+									<input type="text" class="form-control" id="c_fname" name="FirstName">
+								</div>
+								<div class="col-md-6">
+									<label for="c_lname" class="text-black">Last Name <span class="text-danger">*</span></label>
+									<input type="text" class="form-control" id="c_lname" name="SecondName">
+								</div>
 							</div>
-						</div>
 
-						<div class="form-group row">
-							<div class="col-md-12">
-								<label for="c_address" class="text-black">Address <span class="text-danger">*</span></label>
-								<input type="text" class="form-control" id="c_address" name="Street" placeholder="Street address">
+							<div class="form-group row">
+								<div class="col-md-12">
+									<label for="c_companyname" class="text-black">Company Name </label>
+									<input type="text" class="form-control" id="c_companyname" name="Company">
+								</div>
 							</div>
-						</div>
 
-						<div class="form-group mt-3">
-							<input type="text" class="form-control" name="Apartment" placeholder="Apartment, suite, unit etc. (optional)">
-						</div>
-
-					
-
-						<div class="form-group row mb-5">
-							<div class="col-md-6">
-								<label for="c_email_address" class="text-black">Email Address <span class="text-danger">*</span></label>
-								<input type="text" class="form-control" id="c_email_address" name="EmailAddress">
+							<div class="form-group row">
+								<div class="col-md-12">
+									<label for="c_address" class="text-black">Address <span class="text-danger">*</span></label>
+									<input type="text" class="form-control" id="c_address" name="Street" placeholder="Street address">
+								</div>
 							</div>
-							<div class="col-md-6">
-								<label for="c_phone" class="text-black">Phone <span class="text-danger">*</span></label>
-								<input type="text" class="form-control" id="c_phone" name="PhoneNumber" placeholder="Phone Number">
+
+							<div class="form-group mt-3">
+								<input type="text" class="form-control" name="Apartment" placeholder="Apartment, suite, unit etc. (optional)">
 							</div>
+
+
+
+							<div class="form-group row mb-5">
+								<div class="col-md-6">
+									<label for="c_email_address" class="text-black">Email Address <span class="text-danger">*</span></label>
+									<input type="text" class="form-control" id="c_email_address" name="EmailAddress">
+								</div>
+								<div class="col-md-6">
+									<label for="c_phone" class="text-black">Phone <span class="text-danger">*</span></label>
+									<input type="text" class="form-control" id="c_phone" name="PhoneNumber" placeholder="Phone Number">
+								</div>
 								<div class="col-md-6">
 									<label for="paymentMethod" class="text-black">Payment Method <span class="text-danger">*</span></label>
 									<div>
@@ -148,127 +148,138 @@
 								</div>
 								<div class="form-group" style="margin-top: 20px;">
 									@* <button class="btn btn-black btn-lg py-3 btn-block" onclick="window.location='thankyou.cshtml'">Place Order</button> *@
-						          <button type="submit" id="placeOrderBtn" class="btn btn-black btn-lg py-3 btn-block" asp-action="PlaceOrder" asp-controller="Checkout">Place Order</button>
+									<button type="submit" id="placeOrderBtn" class="btn btn-black btn-lg py-3 btn-block" asp-action="PlaceOrder" asp-controller="Checkout">Place Order</button>
 								</div>
+							</div>
 						</div>
-			</form>
-						
 					</div>
-				</div>
-				<div class="col-md-6">
-											<input type="text" class="form-control" id="c_diff_postal_zip" name="c_diff_postal_zip">
+
+					<div class="col-md-6">
+@* 						<input type="text" class="form-control" id="c_diff_postal_zip" name="c_diff_postal_zip">
+ *@						<div class="row mb-5">
+							<div class="col-md-12">
+								<h2 class="h3 mb-3 text-black">Coupon Code</h2>
+								<div class="p-3 p-lg-5 border bg-white">
+									<label for="c_code" class="text-black mb-3">Enter your coupon code if you have one</label>
+									<div class="input-group w-75 couponcode-wrap">
+										<input type="text" class="form-control me-2" id="c_code" placeholder="Coupon Code" aria-label="Coupon Code" aria-describedby="button-addon2">
+										<div class="input-group-append">
+											<button class="btn btn-black btn-sm" type="button" id="button-addon2">Apply</button>
 										</div>
 									</div>
 
-					<div class="row mb-5">
-						<div class="col-md-12">
-							<h2 class="h3 mb-3 text-black">Coupon Code</h2>
-							<div class="p-3 p-lg-5 border bg-white">
-
-								<label for="c_code" class="text-black mb-3">Enter your coupon code if you have one</label>
-								<div class="input-group w-75 couponcode-wrap">
-									<input type="text" class="form-control me-2" id="c_code" placeholder="Coupon Code" aria-label="Coupon Code" aria-describedby="button-addon2">
-									<div class="input-group-append">
-										<button class="btn btn-black btn-sm" type="button" id="button-addon2">Apply</button>
-									</div>
 								</div>
-
 							</div>
 						</div>
-					</div>
 
-					<div class="row mb-5">
-						<div class="col-md-12">
-							<h2 class="h3 mb-3 text-black">Your Order</h2>
-							<div class="p-3 p-lg-5 border bg-white">
-								<table class="table site-block-order-table mb-5">
-									<thead>
-									<th>Product</th>
-									<th>Total</th>
-									</thead>
-									<tbody> @* عرض المنتجات فالاوردر *@
-										@if (Model != null && Model.Any())
-										{
-											@foreach (var products in Model)
+						<div class="row mb-5">
+							<div class="col-md-12">
+								<h2 class="h3 mb-3 text-black">Your Order</h2>
+								<div class="p-3 p-lg-5 border bg-white">
+									<table class="table site-block-order-table mb-5">
+										<thead>
+											<th>Product</th>
+											<th>Total</th>
+										</thead>
+											
+										
+										<tbody>
+											@* عرض المنتجات فالاوردر *@
+											@if (Model != null && Model.Any())
 											{
+												@foreach (var products in Model)
+												{
+													<tr>
+														<td>@products.Product.Prod_Name <strong class="mx-2">x</strong> @products.CartItem.Quantity</td>
+														<td>$@products.CartItem.Sub_total</td>
+													</tr>
+												}
 												<tr>
-													<td>@products.Product.Prod_Name <strong class="mx-2">x</strong> @products.CartItem.Quantity</td>
-													<td>$@products.CartItem.Sub_total</td>
+													<td class="text-black font-weight-bold">
+														<strong>Order Total:</strong>
+													</td>
+													<td class="text-black font-weight-bold"><strong>$@Model.Sum(p => p.CartItem.Sub_total)</td>
 												</tr>
 											}
-											<tr>
-												<td class ="text-black font-weight-bold">
-													<strong>Order Total:</strong>
-												</td>
-												<td class="text-black font-weight-bold"><strong>$@Model.Sum(p => p.CartItem.Sub_total)</td>
-											</tr>
-										}
-										else
-										{
-											<tr>
-												<td colspan="2">No data available</td>
-											</tr>
-										}
+											else
+											{
+												<tr>
+													<td colspan="2">No data available</td>
+												</tr>
+											}
 
-									</tbody>
-								</table>
+										</tbody>
+									</table>
 
-								<div class="border p-3 mb-3">
-									<h3 class="h6 mb-0"><a class="d-block" data-bs-toggle="collapse" href="#collapsebank" role="button" aria-expanded="false" aria-controls="collapsebank">Direct Bank Transfer</a></h3>
+									<div class="border p-3 mb-3">
+										<h3 class="h6 mb-0"><a class="d-block" data-bs-toggle="collapse" href="#collapsebank" role="button" aria-expanded="false" aria-controls="collapsebank">Direct Bank Transfer</a></h3>
 
-									<div class="collapse" id="collapsebank">
-							<div id="visaFields" style="display: none;">
-							<div class="form-group row">
-								<div class="col-md-12">
-									<label for="c_companyname" class="text-black">Card Name </label>
-									<input type="text" class="form-control" >
+										<div class="collapse" id="collapsebank">
+											<div id="visaFields" style="display: none;">
+												<div class="form-group row">
+													<div class="col-md-12">
+														<label for="c_companyname" class="text-black">Card Name </label>
+														<input type="text" class="form-control">
+													</div>
+												</div>
+												<div class="form-group row">
+													@* <div class="col-md-6">
+													<label for="c_fname" class="text-black">End Date <span class="text-danger">*</span></label>
+													<input type="text" class="form-control"  >
+													</div> *@
+													<div class="col-md-6">
+														<label for="c_end_date" class="text-black">End Date <span class="text-danger"></span></label>
+														<input type="date" id="c_end_date" class="form-control" required>
+													</div>
+
+													<script>
+														document.addEventListener("DOMContentLoaded", function () {
+															var today = new Date().toISOString().split('T')[0];
+															document.getElementById('c_end_date').setAttribute('min', today);
+														});
+													</script>
+													@* <div class="col-md-6">
+													<label for="c_lname" class="text-black">Secuirty Code <span class="text-danger">*</span></label>
+													<input type="text" class="form-control">
+													</div> *@
+													<div class="col-md-6">
+														<label for="c_security_code" class="text-black">Security Code <span class="text-danger"></span></label>
+														<input type="text" id="c_security_code" class="form-control" maxlength="3" pattern="\d{3}" required>
+													</div>
+
+												</div>
+
+												<div class="form-group row">
+													<div class="col-md-12">
+														<label for="c_address" class="text-black">Card Number <span class="text-danger"></span></label>
+														<input type="text" class="form-control">
+													</div>
+												</div>
+
+
+
+											</div>
+
+										</div>
+
+									</div>
+
 								</div>
 							</div>
-							<div class="form-group row">
-								@* <div class="col-md-6">
-									<label for="c_fname" class="text-black">End Date <span class="text-danger">*</span></label>
-									<input type="text" class="form-control"  >
-								</div> *@
-								<div class="col-md-6">
-									<label for="c_end_date" class="text-black">End Date <span class="text-danger"></span></label>
-									<input type="date" id="c_end_date" class="form-control" required>
-								</div>
-
-								<script>
-									document.addEventListener("DOMContentLoaded", function () {
-										var today = new Date().toISOString().split('T')[0];
-										document.getElementById('c_end_date').setAttribute('min', today);
-									});
-								</script>
-								@* <div class="col-md-6">
-									<label for="c_lname" class="text-black">Secuirty Code <span class="text-danger">*</span></label>
-									<input type="text" class="form-control">
-								</div> *@
-								<div class="col-md-6">
-									<label for="c_security_code" class="text-black">Security Code <span class="text-danger"></span></label>
-									<input type="text" id="c_security_code" class="form-control" maxlength="3" pattern="\d{3}" required>
-								</div>
-
-							</div>
-
-							<div class="form-group row">
-								<div class="col-md-12">
-									<label for="c_address" class="text-black">Card Number <span class="text-danger"></span></label>
-									<input type="text" class="form-control"  >
-								</div>
-							</div>
-
-
-
-							</div>
+							<!-- </form> -->
 						</div>
 					</div>
-
 				</div>
-			</div>
-			<!-- </form> -->
+
+				
+			</form>
+
+
+			
 		</div>
 	</div>
+			
+
 
 	<!-- Start Footer Section -->
 	<footer class="footer-section">
