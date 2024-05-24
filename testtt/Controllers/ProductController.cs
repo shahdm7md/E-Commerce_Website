@@ -231,7 +231,7 @@ namespace testtt.Controllers
                 // If the product is already in the cart, increase the quantity
                 existingCartItem.Quantity++;
                 existingCartItem.Sub_total = existingCartItem.Quantity * existingCartItem.Unit_price;
-                product.Prod_Stock--;
+                //product.Prod_Stock--;
                 
             }
             else
@@ -248,7 +248,7 @@ namespace testtt.Controllers
                     Sub_total = product.Prod_Price
                 };
                 _context.CartItems.Add(newCartItem);
-				product.Prod_Stock--;
+				//product.Prod_Stock--;
 			}
 
             //cart.Total = _context.CartItems.Where(ci => ci.Cart_ID == cart.Cart_ID).Sum(ci => ci.Sub_total);

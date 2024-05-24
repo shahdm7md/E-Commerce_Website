@@ -107,7 +107,7 @@ namespace testtt.Controllers
 
 			if (existingCartItem != null && product != null)
 			{
-				var originalStock = product.Prod_Stock + existingCartItem.Quantity;
+				var originalStock = product.Prod_Stock; /*+ existingCartItem.Quantity;*/
 
 				if (quantity <= 0)
 				{
@@ -123,8 +123,8 @@ namespace testtt.Controllers
 					existingCartItem.Quantity = quantity;
 					existingCartItem.Sub_total = quantity * existingCartItem.Unit_price;
 
-					var stockChange = quantityDifference;
-					product.Prod_Stock -= stockChange;
+					//var stockChange = quantityDifference;
+					//product.Prod_Stock -= stockChange;
 
 					_context.SaveChanges();
 

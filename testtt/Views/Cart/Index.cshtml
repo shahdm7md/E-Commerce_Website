@@ -237,16 +237,18 @@
 			var currentQuantity = parseInt(input.val());
 			var newQuantity = currentQuantity ;
 
-			var originalStock = stock + newQuantity;
+			//var originalStock = stock + newQuantity;
 
 
-			if (newQuantity > 0 && newQuantity <= originalStock) {
+			if (newQuantity > 0 && newQuantity <= stock) {
 				input.val(newQuantity);
 				var originalQuantity = currentQuantity; 
 				updateQuantity(productId, newQuantity, originalQuantity, button);
 			} 
-			else if (newQuantity >= originalStock) {
+			else if (newQuantity >= stock) {
 				//$(button).prop('disabled', true);
+				input.val(stock);
+				updateQuantity(productId, stock, originalQuantity, button);
 
 				alert('Requested quantity exceeds available stock.');
 				//$(button).closest('.quantity-container').find('.increase').prop('disabled', true);

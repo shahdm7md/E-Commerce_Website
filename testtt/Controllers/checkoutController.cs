@@ -100,6 +100,14 @@ namespace testtt.Controllers
 
 				// Add order details to the database
 				_context.OrderDetails.Add(orderDetail);
+
+				var product = await _context.Products.FindAsync(cartItem.Product.Prod_ID);
+				if (product != null)
+				{
+					product.Prod_Stock -= cartItem.Quantity;
+					_context.Products.Update(product);
+				}
+
 				await _context.SaveChangesAsync();
 			}
 
