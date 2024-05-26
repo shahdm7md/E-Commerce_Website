@@ -109,19 +109,19 @@
 							<div class="form-group row">
 								<div class="col-md-12">
 									<label for="c_companyname" class="text-black">Company Name </label>
-									<input type="text" class="form-control" id="c_companyname" name="Company" required>
+									<input type="text" class="form-control" id="c_companyname" name="Company" minlength="5" maxlength="100" pattern="[A-Za-z0-9\s,.-]+" title="Please enter a valid address using letters, numbers, spaces, commas, dots, and hyphens only"  required>
 								</div>
 							</div>
 
 							<div class="form-group row">
 								<div class="col-md-12">
 									<label for="c_address" class="text-black">Address <span class="text-danger">*</span></label>
-									<input type="text" class="form-control" id="c_address" name="Street" placeholder="Street address" required>
+									<input type="text" class="form-control" id="c_address" name="Street" placeholder="Street address" minlength="5" maxlength="100" pattern="[A-Za-z0-9\s,.-]+" title="Please enter a valid address using letters, numbers, spaces, commas, dots, and hyphens only"  required>
 								</div>
 							</div>
 
 							<div class="form-group mt-3">
-								<input type="text" class="form-control" name="Apartment" placeholder="Apartment, suite, unit etc. (optional)" required>
+								<input type="text" class="form-control" name="Apartment" placeholder="Apartment, suite, unit etc. " minlength="5" maxlength="100" pattern="[A-Za-z0-9\s,.-]+" title="Please enter a valid address using letters, numbers, spaces, commas, dots, and hyphens only"  required>
 							</div>
 
 
