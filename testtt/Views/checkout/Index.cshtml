@@ -98,11 +98,11 @@
 							<div class="form-group row">
 								<div class="col-md-6">
 									<label for="c_fname" class="text-black">First Name <span class="text-danger">*</span></label>
-									<input type="text" class="form-control" id="c_fname" name="FirstName" required>
+									<input type="text" class="form-control" id="c_fname" pattern="[A-Za-zأ-ي]+" name="FirstName" required>
 								</div>
 								<div class="col-md-6">
 									<label for="c_lname" class="text-black">Last Name <span class="text-danger">*</span></label>
-									<input type="text" class="form-control" id="c_lname" name="SecondName" required>
+									<input type="text" class="form-control" id="c_lname" name="SecondName" pattern="[A-Za-zأ-ي]+" required>
 								</div>
 							</div>
 
@@ -240,7 +240,7 @@
 												<div class="form-group row">
 													<div class="col-md-12">
 														<label for="c_address" class="text-black">Card Number <span class="text-danger">*</span></label>
-														<input type="text" id="c_address" class="form-control" pattern="[0-9]{16}" title="Please enter 16 digits" >
+														<input type="text" id="c_address" class="form-control" maxlength="16" pattern="\d{16}" title="Please enter 16 digits">
 													</div>
 												</div>
 
