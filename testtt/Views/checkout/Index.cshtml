@@ -157,19 +157,19 @@
 					</div>
 
 					<div class="col-md-6">
-@* 						<input type="text" class="form-control" id="c_diff_postal_zip" name="c_diff_postal_zip">
- *@						<div class="row mb-5">
+						<div class="row mb-5">
 							<div class="col-md-12">
 								<h2 class="h3 mb-3 text-black">Coupon Code</h2>
 								<div class="p-3 p-lg-5 border bg-white">
-									<label for="c_code" class="text-black mb-3">Enter your coupon code if you have one</label>
-									<div class="input-group w-75 couponcode-wrap">
-										<input type="text" class="form-control me-2" id="c_code" placeholder="Coupon Code" aria-label="Coupon Code" aria-describedby="button-addon2">
-										<div class="input-group-append">
-											<button class="btn btn-black btn-sm" type="button" id="button-addon2">Apply</button>
+									<form method="post" asp-action="ApplyCoupon" asp-controller="checkout">
+										<label for="c_code" class="text-black mb-3">Enter your coupon code if you have one</label>
+										<div class="input-group w-75 couponcode-wrap">
+											<input type="text" class="form-control me-2" id="c_code" name="CouponCode" placeholder="Coupon Code" aria-label="Coupon Code" aria-describedby="button-addon2">
+											<div class="input-group-append">
+												<button class="btn btn-black btn-sm" type="submit" id="button-addon2">Apply</button>
+											</div>
 										</div>
-									</div>
-
+									</form>
 								</div>
 							</div>
 						</div>
@@ -295,107 +295,13 @@
 
 		</div>
 	</footer>
-	<!-- End Footer Section -->
-@* 	<script>
-		document.getElementById("placeOrderBtn").addEventListener("click", function () {
-			var form = document.getElementById("checkoutForm");
-			var formData = new FormData(form);
 
-			var xhr = new XMLHttpRequest();
-			xhr.open("POST", "@Url.Action("PlaceOrder", "checkout")", true);
-			xhr.setRequestHeader('Content-Type', 'application/json');
-			xhr.onload = function () {
-				if (xhr.status === 200) {
-					window.location.href = "thankyou";
-				} else {
-					alert("There was an error processing your order. Please try again.");
-				}
-			};
-
-			var object = {};
-			formData.forEach(function (value, key) {
-				object[key] = value;
-			});
-
-			xhr.send(JSON.stringify(object));
-		});
-	</script> *@
 
 
 	<script src="js/bootstrap.bundle.min.js"></script>
 	<script src="js/tiny-slider.js"></script>
 	<script src="js/custom.js"></script>
 	
-@* 
-	<script>
-		document.addEventListener("DOMContentLoaded", function () {
-			var visaFields = document.getElementById('visaFields');
-			var visaRadioButton = document.getElementById('visa');
-			var cashRadioButton = document.getElementById('cash');
-			var placeOrderButton = document.getElementById('placeOrderButton');
-
-			// Initially hide the Visa fields
-			visaFields.style.display = 'none';
-
-			visaRadioButton.addEventListener('change', function () {
-				if (this.checked) {
-					visaFields.style.display = 'block';
-				} else {
-					visaFields.style.display = 'none';
-				}
-				// Enable Place Order button only if Visa is selected and Visa data is filled
-				placeOrderButton.disabled = !(this.checked && isVisaDataFilled());
-			});
-
-			cashRadioButton.addEventListener('change', function () {
-				if (this.checked) {
-					visaFields.style.display = 'none';
-					// Enable Place Order button when Cash is selected
-					placeOrderButton.disabled = false;
-				}
-			});
-
-			// Function to check if Visa fields are filled
-			function isVisaDataFilled() {
-				var cardNumber = document.getElementById('cardNumber').value;
-				var expiryDate = document.getElementById('expiryDate').value;
-				return cardNumber.trim() !== '' && expiryDate.trim() !== '';
-			}
-		});
-
-	</script> *@
-@* 
-	<script>
-		document.addEventListener("DOMContentLoaded", function () {
-			var today = new Date().toISOString().split('T')[0];
-			document.getElementById('c_end_date').setAttribute('min', today);
-
-			var paymentMethodElements = document.getElementsByName('PaymentMethod');
-			var cardFields = ['c_companyname', 'c_end_date', 'c_security_code', 'c_address'];
-
-			function updateRequiredAttributes() {
-				var selectedPaymentMethod = document.querySelector('input[name="PaymentMethod"]:checked').value;
-				var isVisa = selectedPaymentMethod === 'Visa';
-				cardFields.forEach(function (id) {
-					var field = document.getElementById(id);
-					if (isVisa) {
-						field.setAttribute('required', 'required');
-					} else {
-						field.removeAttribute('required');
-					}
-				});
-			}
-
-			paymentMethodElements.forEach(function (element) {
-				element.addEventListener('change', updateRequiredAttributes);
-			});
-
-			// Initial check on page load
-			if (document.querySelector('input[name="PaymentMethod"]:checked')) {
-				updateRequiredAttributes();
-			}
-		});
-	</script> *@
 	<script>
 		document.addEventListener("DOMContentLoaded", function () {
 			var today = new Date().toISOString().split('T')[0];
@@ -431,5 +337,24 @@
 		});
 	</script>
 </body>
+<script>
+	$(document).ready(function () {
+		$("#applyCouponForm").submit(function (event) {
+			event.preventDefault();
+			var couponCode = $("#c_code").val();
+			$.ajax({
+				type: "POST",
+				url: '@Url.Action("ApplyCoupon", "checkout")',
+				data: { CouponCode: couponCode },
+				success: function (response) {
+					$("#orderTotal").text('$' + response.total);
+				},
+				error: function (xhr, textStatus, errorThrown) {
+					console.log("Error: " + errorThrown);
+				}
+			});
+		});
+	});
+</script>
 
 </html>

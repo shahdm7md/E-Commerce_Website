@@ -134,18 +134,6 @@ namespace testtt.Controllers
 			return RedirectToAction("thankyou");
 		}
 
-		//public IActionResult ThankYou()
-		//{
-		//	// You can load any additional data you need for the "ThankYou" page here if necessary
-		//	return View();
-		//}
-
-		//public IActionResult Confirmation()
-		//{
-		//	// You can display a confirmation message or details here
-		//	return View();
-		//}
-
 		public IActionResult thankyou()
 		{
 			// يمكنك هنا تحميل أي بيانات إضافية تحتاجها صفحة "thankyou" وتمريرها لها إذا لزم الأمر
@@ -157,5 +145,43 @@ namespace testtt.Controllers
 			// You can display a confirmation message or details here
 			return View();
 		}
+
+		
+
+        [HttpPost]
+		[HttpPost]
+		public async Task<IActionResult> ApplyCoupon(string CouponCode)
+		{
+			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+			// Find the user's cart
+			var userCart = _context.Carts
+				.Include(c => c.CartItems)
+				.ThenInclude(ci => ci.Product)
+				.FirstOrDefault(c => c.Cus_ID == userId);
+
+			if (!string.IsNullOrEmpty(CouponCode))
+			{
+				var coupon = await _context.Coupons
+					.FirstOrDefaultAsync(c => c.Code == CouponCode && c.IsActive && c.ExpiryDate > DateTime.Now);
+				if (coupon != null)
+				{
+					if (coupon.IsPercentage)
+					{
+						userCart.Total -= userCart.Total * (coupon.DiscountAmount / 100);
+					}
+					else
+					{
+						userCart.Total -= coupon.DiscountAmount;
+					}
+				}
+			}
+
+			await _context.SaveChangesAsync();
+
+			return Json(new { total = userCart.Total });
+		}
+
+
 	}
 }
