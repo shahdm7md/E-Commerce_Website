@@ -21,6 +21,7 @@ namespace testtt.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<Customer> _userManager;
         private readonly SignInManager<Customer> _signInManager; 
         private readonly IWebHostEnvironment _Environment;
+        private long _maxAllowedPosterSize = 1048576;
 
         public IndexModel(
             UserManager<Customer> userManager,
@@ -76,6 +77,7 @@ namespace testtt.Areas.Identity.Pages.Account.Manage
             //public string PhoneNumber { get; set; }
             //[RegularExpression(@"^(https?|ftp):\/\/[^\s\/$.?#].[^\s]*$", ErrorMessage = "Invalid URL.")]
             [Display(Name = "")]
+            [RegularExpression(@".*\.(jpg|jpeg|png|gif)$", ErrorMessage = "Only JPG, JPEG, PNG, and GIF files are allowed.")]
             public string? Cus_ImageUrl { get; set; }
 
             //[Required(ErrorMessage = "Address is required.")]
@@ -205,7 +207,7 @@ namespace testtt.Areas.Identity.Pages.Account.Manage
 			//        }
 			if (Request.Form.Files.Count > 0)
 			{
-				string path = Path.Combine(_Environment.WebRootPath, "images"); // wwwroot/Img/
+				string path = Path.Combine(_Environment.WebRootPath, "images"); 
 				if (!Directory.Exists(path))
 				{
 					Directory.CreateDirectory(path);
@@ -220,11 +222,19 @@ namespace testtt.Areas.Identity.Pages.Account.Manage
 
 					if (!allowedExtensions.Contains(fileExtension))
 					{
-						ModelState.AddModelError("ProfilePicture", "Invalid file type. Only JPG, JPEG, PNG, and GIF files are allowed.");
-						return BadRequest(ModelState);
-					}
+						ModelState.AddModelError("Input.Cus_ImageUrl", "Invalid file type. Only JPG, JPEG, PNG, and GIF files are allowed.");
+                        await LoadAsync(user);
+                        return Page();
+                        //return BadRequest(ModelState);
+                    }
+                    if (img_file.Length > _maxAllowedPosterSize)
+                    {
+                        ModelState.AddModelError("ProdImage", "Product Image cannot be more than 1 MB!");
+                        await LoadAsync(user);
+                        return Page();
+                    }
 
-					path = Path.Combine(path, img_file.FileName); // For example: /Img/Photoname.png
+                    path = Path.Combine(path, img_file.FileName); 
 
 					using (var stream = new FileStream(path, FileMode.Create))
 					{
@@ -234,7 +244,7 @@ namespace testtt.Areas.Identity.Pages.Account.Manage
 				}
 				else
 				{
-					user.Cus_ImageUrl = "default_image.jpg"; // Save the default image path in the database
+					user.Cus_ImageUrl = "default_image.jpg"; 
 				}
 
 				await _userManager.UpdateAsync(user);

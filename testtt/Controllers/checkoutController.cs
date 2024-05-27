@@ -24,7 +24,6 @@ namespace testtt.Controllers
 		{
 			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-			// Find the user's cart
 			var userCart = _context.Carts
 				.Include(c => c.CartItems)
 				.ThenInclude(ci => ci.Product)
@@ -32,7 +31,6 @@ namespace testtt.Controllers
 
 			if (userCart == null || userCart.CartItems.Count == 0)
 			{
-				// Handle the scenario where the user's cart is empty
 				return RedirectToAction("Index", "Cart");
 			}
 
@@ -53,7 +51,7 @@ namespace testtt.Controllers
 		{
 			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-			// Find the user's cart
+			
 			var userCart = await _context.Carts
 				.Include(c => c.CartItems)
 				.ThenInclude(ci => ci.Product)
@@ -61,7 +59,6 @@ namespace testtt.Controllers
 
 			if (userCart == null || !userCart.CartItems.Any())
 			{
-				// Handle the scenario where the user's cart is empty
 				return RedirectToAction("Index", "Cart");
 			}
 
@@ -69,10 +66,10 @@ namespace testtt.Controllers
 			var order = new Order
 			{
 				Order_date = DateTime.Now,
-				Order_Status = "Pending", // Set the order status here as needed
+				Order_Status = "Pending", 
 				Total_amount = userCart.Total,
 				Shipping_address = $"{checkoutForm.Street}, {checkoutForm.Apartment}, {checkoutForm.Country}", // Set the shipping address based on the data received from the checkout form
-				Cus_ID = userId // Set the customer ID
+				Cus_ID = userId 
 			};
 
 			// Add the order to the database
@@ -86,6 +83,7 @@ namespace testtt.Controllers
 				{
 					Quantity = cartItem.Quantity,
 					Sub_Total = cartItem.Sub_total,
+					Unit_price = cartItem.Unit_price,
 					Order_ID = order.Order_ID,
 					Prod_ID = cartItem.Product.Prod_ID,
 					FirstName = checkoutForm.FirstName, // Use data from the checkout form
@@ -117,32 +115,27 @@ namespace testtt.Controllers
 			userCart.Total = 0;
 			await _context.SaveChangesAsync();
 
-			// Create and add payment information
 			var payment = new Payment
 			{
-				Method = PaymentMethod, // Set the payment method from the hidden form field
-				Amount = order.Total_amount, // Set the payment amount
+				Method = PaymentMethod, 
+				Amount = order.Total_amount,
 				Pay_Date = DateTime.Now,
-				Order_ID = order.Order_ID // Set the order ID
+				Order_ID = order.Order_ID 
 			};
 
-			// Add payment to the database
 			_context.Payments.Add(payment);
 			await _context.SaveChangesAsync();
 
-			// Redirect to a thank you page
 			return RedirectToAction("thankyou");
 		}
 
 		public IActionResult thankyou()
 		{
-			// يمكنك هنا تحميل أي بيانات إضافية تحتاجها صفحة "thankyou" وتمريرها لها إذا لزم الأمر
-			return View(); // عرض صفحة الـ "thankyou"
+			return View(); 
 		}
 
 		public IActionResult Confirmation()
 		{
-			// You can display a confirmation message or details here
 			return View();
 		}
 
