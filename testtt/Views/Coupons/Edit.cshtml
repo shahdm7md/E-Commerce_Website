@@ -1,0 +1,38 @@
+﻿@model Coupon
+
+<h2>Edit Coupon</h2>
+
+<form asp-action="Edit">
+    <div class="form-group">
+        <label asp-for="Code" class="control-label"></label>
+        <input asp-for="Code" class="form-control" />
+        <span asp-validation-for="Code" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="DiscountAmount" class="control-label"></label>
+        <input asp-for="DiscountAmount" class="form-control" />
+        <span asp-validation-for="DiscountAmount" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="IsPercentage" class="control-label"></label>
+        <input asp-for="IsPercentage" type="checkbox" class="form-check-input" />
+        <span asp-validation-for="IsPercentage" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ExpiryDate" class="control-label"></label>
+        <input asp-for="ExpiryDate" class="form-control" />
+        <span asp-validation-for="ExpiryDate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="IsActive" class="control-label"></label>
+        <input asp-for="IsActive" type="checkbox" class="form-check-input" />
+        <span asp-validation-for="IsActive" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

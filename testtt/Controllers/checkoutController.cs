@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -34,7 +35,6 @@ namespace testtt.Controllers
 				return RedirectToAction("Index", "Cart");
 			}
 
-			// Create a list of CartItemViewModel
 			var cartItemViewModels = userCart.CartItems.Select(cartItem => new CartItemViewModel
 			{
 				CartItem = cartItem,
@@ -47,11 +47,10 @@ namespace testtt.Controllers
 
 		[Authorize]
 		[HttpPost]
-		public async Task<IActionResult> PlaceOrder([FromForm] OrderDetail checkoutForm, [FromForm] string PaymentMethod)
+		public async Task<IActionResult> PlaceOrder([FromForm] OrderDetail checkoutForm, [FromForm] string PaymentMethod, [FromForm] string couponCode)
 		{
 			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-			
 			var userCart = await _context.Carts
 				.Include(c => c.CartItems)
 				.ThenInclude(ci => ci.Product)
@@ -62,13 +61,21 @@ namespace testtt.Controllers
 				return RedirectToAction("Index", "Cart");
 			}
 
+			// Apply coupon code
+			var coupon = await _context.Coupons.FirstOrDefaultAsync(c => c.Code == couponCode && c.IsActive && c.ExpiryDate > DateTime.Now);
+			if (coupon != null)
+			{
+				userCart.Total -= CalculateDiscount(userCart.Total, coupon);
+			}
+
+			// Create a new order object
 			var order = new Order
 			{
 				Order_date = DateTime.Now,
-				Order_Status = "Pending", 
+				Order_Status = "Pending",
 				Total_amount = userCart.Total,
-				Shipping_address = $"{checkoutForm.Street}, {checkoutForm.Apartment}, {checkoutForm.Country}", // Set the shipping address based on the data received from the checkout form
-				Cus_ID = userId 
+				Shipping_address = $"{checkoutForm.Street}, {checkoutForm.Apartment}, {checkoutForm.Country}",
+				Cus_ID = userId
 			};
 
 			_context.Orders.Add(order);
@@ -84,7 +91,7 @@ namespace testtt.Controllers
 					Unit_price = cartItem.Unit_price,
 					Order_ID = order.Order_ID,
 					Prod_ID = cartItem.Product.Prod_ID,
-					FirstName = checkoutForm.FirstName, // Use data from the checkout form
+					FirstName = checkoutForm.FirstName,
 					SecondName = checkoutForm.SecondName,
 					EmailAddress = checkoutForm.EmailAddress,
 					PhoneNumber = checkoutForm.PhoneNumber,
@@ -94,7 +101,6 @@ namespace testtt.Controllers
 					Company = checkoutForm.Company
 				};
 
-				// Add order details to the database
 				_context.OrderDetails.Add(orderDetail);
 
 				var product = await _context.Products.FindAsync(cartItem.Product.Prod_ID);
@@ -103,22 +109,19 @@ namespace testtt.Controllers
 					product.Prod_Stock -= cartItem.Quantity;
 					_context.Products.Update(product);
 				}
-
-				await _context.SaveChangesAsync();
 			}
 
 			// Remove cart items
 			_context.CartItems.RemoveRange(userCart.CartItems);
 			_context.Carts.Remove(userCart);
-			userCart.Total = 0;
 			await _context.SaveChangesAsync();
 
 			var payment = new Payment
 			{
-				Method = PaymentMethod, 
+				Method = PaymentMethod,
 				Amount = order.Total_amount,
 				Pay_Date = DateTime.Now,
-				Order_ID = order.Order_ID 
+				Order_ID = order.Order_ID
 			};
 
 			_context.Payments.Add(payment);
@@ -129,23 +132,51 @@ namespace testtt.Controllers
 			return RedirectToAction("thankyou");
 		}
 
-		//public IActionResult ThankYou()
-		//{
-		//	// You can load any additional data you need for the "ThankYou" page here if necessary
-		//	return View();
-		//}
-
-		//public IActionResult Confirmation()
-		//{
-		//	// You can display a confirmation message or details here
-		//	return View();
-		//}
-		
-		public IActionResult thankyou() 
+		public async Task<IActionResult> ApplyCoupon([FromForm] string couponCode)
 		{
-			
+			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+			var userCart = await _context.Carts
+				.Include(c => c.CartItems)
+				.FirstOrDefaultAsync(c => c.Cus_ID == userId);
+
+			var coupon = await _context.Coupons.FirstOrDefaultAsync(c => c.Code == couponCode);
+
+			if (coupon != null)
+			{
+				var discountAmount = CalculateDiscount(userCart.Total, coupon);
+				var updatedTotal = userCart.Total - discountAmount;
+
+				return Json(new { total = updatedTotal });
+			}
+			else
+			{
+				return BadRequest("Invalid coupon code.");
+			}
+		}
+
+		private decimal CalculateDiscount(decimal total, Coupon coupon)
+		{
+			if (coupon.IsActive && coupon.ExpiryDate > DateTime.Now)
+			{
+				if (coupon.IsPercentage)
+				{
+					decimal discount = (coupon.DiscountAmount / 100) * total;
+					return Math.Min(discount, total);
+				}
+				else
+				{
+					return Math.Min(coupon.DiscountAmount, total);
+				}
+			}
+			else
+			{
+				return 0;
+			}
+		}
+
+		public IActionResult thankyou()
+		{
 			return View();
-			
 		}
 
 		public IActionResult Confirmation()
