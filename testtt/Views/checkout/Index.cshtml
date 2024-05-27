@@ -134,7 +134,7 @@
 
 								<div class="col-md-6">
 									<label for="c_phone" class="text-black">Phone <span class="text-danger">*</span></label>
-									<input type="text" class="form-control" id="c_phone" name="PhoneNumber" placeholder="Phone Number" pattern="[0-9]+" title="Please enter numbers only" required>
+									<input type="text" class="form-control" id="c_phone" name="PhoneNumber" placeholder="Phone Number" pattern="[0-9]+" title="Please enter numbers only" required maxlength="11">
 								</div>
 
 								<div class="col-md-6">
@@ -229,7 +229,7 @@
 												<div class="form-group row">
 													<div class="col-md-6">
 														<label for="c_end_date" class="text-black">End Date <span class="text-danger">*</span></label>
-														<input type="date" id="c_end_date" class="form-control">
+														<input type="date" id="c_end_date" class="form-control" min="{{ DateTime.Now.ToString("yyyy-MM-dd") }}">
 													</div>
 													<div class="col-md-6">
 														<label for="c_security_code" class="text-black">Security Code <span class="text-danger">*</span></label>

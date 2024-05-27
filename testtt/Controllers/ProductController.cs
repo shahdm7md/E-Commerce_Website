@@ -188,8 +188,8 @@ namespace testtt.Controllers
         [HttpGet]
         public async Task <IActionResult> UserProducts()
         {
-            var products = await _context.Products.ToListAsync(); // استرجاع كافة المنتجات من قاعدة البيانات
-            return View("UserProducts", products); // إرسال قائمة المنتجات إلى الصفحة لتتم عرضها هناك
+            var products = await _context.Products.ToListAsync(); 
+            return View("UserProducts", products);  
         }
 
 

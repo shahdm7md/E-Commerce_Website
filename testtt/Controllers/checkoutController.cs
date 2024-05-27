@@ -62,7 +62,6 @@ namespace testtt.Controllers
 				return RedirectToAction("Index", "Cart");
 			}
 
-			// Create a new order object
 			var order = new Order
 			{
 				Order_date = DateTime.Now,
@@ -72,11 +71,10 @@ namespace testtt.Controllers
 				Cus_ID = userId 
 			};
 
-			// Add the order to the database
 			_context.Orders.Add(order);
 			await _context.SaveChangesAsync();
 
-			// Create order details
+
 			foreach (var cartItem in userCart.CartItems)
 			{
 				var orderDetail = new OrderDetail
@@ -126,6 +124,8 @@ namespace testtt.Controllers
 			_context.Payments.Add(payment);
 			await _context.SaveChangesAsync();
 
+			
+
 			return RedirectToAction("thankyou");
 		}
 
@@ -140,10 +140,12 @@ namespace testtt.Controllers
 		//	// You can display a confirmation message or details here
 		//	return View();
 		//}
-
-		public IActionResult thankyou()
+		
+		public IActionResult thankyou() 
 		{
-			return View(); 
+			
+			return View();
+			
 		}
 
 		public IActionResult Confirmation()

@@ -5,6 +5,19 @@
 * License: https://creativecommons.org/licenses/by/3.0/
 */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+@keyframes moveFromLeft {
+    from {
+        transform: translateX(-100%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+.hero-img-wrap {
+    animation: moveFromLeft 1s forwards; /* Adjust animation duration as needed */
+}
 
 body {
     overflow-x: hidden;
@@ -156,8 +169,17 @@ a {
 
 .hero .intro-excerpt {
     position: relative;
-    z-index: 4;
+    /*    z-index: 4;
+    position: relative;
+    top: -50px;
+*/
+    top: -50px;
 }
+
+.move-up {
+    margin-top: -50px; /* Adjust this value as needed to move content up */
+}
+
 
 @media (min-width: 992px) {
     .hero .intro-excerpt {
@@ -1036,4 +1058,23 @@ body.login-layout {
 
 .login-page .container {
     padding-top: 50px; /* Adjust the padding on the top */
+}
+
+@keyframes moveFromLeft {
+    from {
+        transform: translateX(-100%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+.hero-img-wrap {
+    animation: moveFromLeft 1s forwards; /* Adjust animation duration as needed */
+}
+
+.move{
+    padding-bottom:5rem;
+    padding-left:2rem;
 }
