@@ -23,7 +23,7 @@ namespace testtt.Models
         [Required(ErrorMessage = "Shipping address is required.")]
         public string Shipping_address { get; set; }
 
-        public decimal? Discount { get; set; }
+        //public decimal? Discount { get; set; }
 
         [ForeignKey("Customer")]
         public string Cus_ID { get; set; }

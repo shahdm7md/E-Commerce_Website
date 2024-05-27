@@ -202,6 +202,13 @@
 														<strong>Order Total:</strong>
 													</td>
 													<td id="orderTotal" class="text-black font-weight-bold"><strong>$@Model.Sum(p => p.CartItem.Sub_total)</td>
+													
+												</tr>
+												<tr>
+													<td class="text-black font-weight-bold">
+														<strong>Order Total After Discount:</strong>
+													</td>
+													<td id="orderTotal1" class="text-black font-weight-bold"><strong>$@Model.Sum(p => p.CartItem.Sub_total)</td>
 												</tr>
 											}
 											else
@@ -344,33 +351,42 @@
 	Coupon applied successfully! Your new total is: <span id="newTotal"></span>
 </div>
 
-<!-- مثال لإضافة التعليمات البرمجية في الصفحة الخاصة بك -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-	$(document).ready(function () {
-		// استدعاء الإجراء عند تقديم نموذج الكوبون
-		$("#c_code").change(function () {
-			applyCoupon();
-		});
 
-		// دالة لتطبيق الكوبون
-		function applyCoupon() {
-			var couponCode = $("#c_code").val();
-			$.ajax({
-				type: "POST",
-				url: '@Url.Action("ApplyCoupon", "Checkout")',
-				data: { couponCode: couponCode },
-				success: function (response) {
-					// تحديث الإجمالي بالقيمة الجديدة من الاستجابة
-					$("#orderTotal").text('$' + response.total);
-				},
-				error: function (xhr, textStatus, errorThrown) {
-					console.log("Error: " + errorThrown);
-				}
-			});
-		}
-	});
-</script>
 
 
 </html>
+
+@section Scripts {
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script>
+		$(document).ready(function () {
+			$("#button-addon2").click(function (e) {
+				e.preventDefault(); 
+				applyCoupon();
+			});
+
+			function applyCoupon() {
+				var couponCode = $("#c_code").val();
+				$.ajax({
+					type: "POST",
+					url: '@Url.Action("ApplyCoupon", "Checkout")',
+					data: { couponCode: couponCode },
+					success: function (response) {
+						if (response.success) {
+							$("#orderTotal1").text('$' + response.total);
+
+							$("#couponAlert").show().find("#newTotal").text('$' + response.total);
+						} else {
+							alert("Invalid coupon code.");
+						}
+					},
+					error: function (xhr, textStatus, errorThrown) {
+						console.log("Error: " + errorThrown);
+					}
+				});
+			}
+		});
+	</script>
+
+
+}

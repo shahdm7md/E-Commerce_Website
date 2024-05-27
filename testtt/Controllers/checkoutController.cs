@@ -146,11 +146,12 @@ namespace testtt.Controllers
 				var discountAmount = CalculateDiscount(userCart.Total, coupon);
 				var updatedTotal = userCart.Total - discountAmount;
 
-				return Json(new { total = updatedTotal });
+				return Json(new { success = true, total = updatedTotal });
 			}
 			else
 			{
-				return BadRequest("Invalid coupon code.");
+				return Json(new { success = false });
+				//return BadRequest("Invalid coupon code.");
 			}
 		}
 

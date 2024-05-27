@@ -1,0 +1,72 @@
+﻿@model IEnumerable<testtt.Models.Order>
+
+@{
+    ViewData["Title"] = "Orders";
+}
+
+<h1>Orders</h1>
+
+<head>
+
+    <link href="~/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="~/css/tiny-slider.css" rel="stylesheet">
+    <link href="~/css/style.css" rel="stylesheet">
+</head>
+<style>
+    /* توسيط المحتوى داخل العمود */
+    .content {
+        display: flex;
+        justify-content: center; /* توسيط المحتوى أفقيًا */
+        align-items: center; /* توسيط المحتوى عموديًا */
+    }
+</style>
+
+<div class="container mt-4">
+    @if (!Model.Any())  // لا توجد منتجات
+    {
+        <div class="alert alert-warning" role="alert">
+            <i class="bi bi-exclamation-triangle"></i>
+            No Products found!
+        </div>
+    }
+    else
+    {
+        <div class="row content d-flex justify-content-center justify-content-between">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Order Date</th>
+                        <th>Order Status</th>
+                        <th>Total Amount</th>
+                        <th>Shipping Address</th>
+@*                         <th>Discount</th>
+ *@                        <th>Customer</th>
+                        <th>Customer ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in Model)
+                    {
+                        <tr>
+                            <td>@order.Order_ID</td>
+                            <td>@order.Order_date.ToString("yyyy-MM-dd")</td>
+@*                             <td>@order.Order_Status</td>
+                    *@
+                            <td>
+                                <a class="btn btn-primary btn-xs" href="@Url.Action("ChangeStatus", "Order", new { orderId = order.Order_ID })">@order.Order_Status</a>
+                            </td>
+                            <td>@order.Total_amount</td>
+                            <td>@order.Shipping_address</td>
+@*                             <td>@order.Discount</td>
+ *@                            <td>@order.Customer?.Cus_FName</td>
+                            <td>@order.Customer?.Id</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+
+</div>

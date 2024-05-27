@@ -365,7 +365,6 @@
 
 
 		
-		// Function to update the cart total
 		function updateCartTotal() {
 			var total = 0;
 			$('.product-total').each(function () {
@@ -378,7 +377,7 @@
 			$('#total').text(total.toFixed(2));
 		}
 
-		// Function to handle delete link click
+		// delete
 		window.deleteRow = function (button) {
 			var row = $(button).closest('tr');
 			var productId = $(button).data('product-id');
