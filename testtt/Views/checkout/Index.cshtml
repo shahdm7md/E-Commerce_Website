@@ -201,15 +201,15 @@
 													<td class="text-black font-weight-bold">
 														<strong>Order Total:</strong>
 													</td>
-													<td id="orderTotal" class="text-black font-weight-bold"><strong>$@Model.Sum(p => p.CartItem.Sub_total)</td>
-													
+													<td id="orderTotal" class="text-black font-weight-bold"><strong>$@Model.Sum(p => p.CartItem.Sub_total)</strong></td>
 												</tr>
 												<tr>
 													<td class="text-black font-weight-bold">
 														<strong>Order Total After Discount:</strong>
 													</td>
-													<td id="orderTotal1" class="text-black font-weight-bold"><strong>$@Model.Sum(p => p.CartItem.Sub_total)</td>
+													<td id="orderTotal1" class="text-black font-weight-bold"><strong>$@Model.Sum(p => p.CartItem.Sub_total).ToString("F2")</strong></td>
 												</tr>
+
 											}
 											else
 											{
@@ -361,7 +361,7 @@
 	<script>
 		$(document).ready(function () {
 			$("#button-addon2").click(function (e) {
-				e.preventDefault(); 
+				e.preventDefault();
 				applyCoupon();
 			});
 
@@ -373,9 +373,9 @@
 					data: { couponCode: couponCode },
 					success: function (response) {
 						if (response.success) {
-							$("#orderTotal1").text('$' + response.total);
-
-							$("#couponAlert").show().find("#newTotal").text('$' + response.total);
+							// تحديث النص ليكون جريء وبالأرقام العشرية
+							$("#orderTotal1").html('<strong>$' + response.total.toFixed(2) + '</strong>');
+							$("#couponAlert").show().find("#newTotal").text('$' + response.total.toFixed(2));
 						} else {
 							alert("Invalid coupon code.");
 						}
@@ -387,6 +387,8 @@
 			}
 		});
 	</script>
+}
+
 
 
 }
