@@ -77,7 +77,7 @@ namespace testtt.Areas.Identity.Pages.Account.Manage
             //public string PhoneNumber { get; set; }
             //[RegularExpression(@"^(https?|ftp):\/\/[^\s\/$.?#].[^\s]*$", ErrorMessage = "Invalid URL.")]
             [Display(Name = "")]
-            [RegularExpression(@".*\.(jpg|jpeg|png|gif)$", ErrorMessage = "Only JPG, JPEG, PNG, and GIF files are allowed.")]
+            //[RegularExpression(@".*\.(jpg|jpeg|png|gif)$", ErrorMessage = "Only JPG, JPEG, PNG, and GIF files are allowed.")]
             public string? Cus_ImageUrl { get; set; }
 
             //[Required(ErrorMessage = "Address is required.")]
@@ -227,12 +227,12 @@ namespace testtt.Areas.Identity.Pages.Account.Manage
                         return Page();
                         //return BadRequest(ModelState);
                     }
-                    if (img_file.Length > _maxAllowedPosterSize)
-                    {
-                        ModelState.AddModelError("ProdImage", "Product Image cannot be more than 1 MB!");
-                        await LoadAsync(user);
-                        return Page();
-                    }
+                    //if (img_file.Length > _maxAllowedPosterSize)
+                    //{
+                    //    ModelState.AddModelError("ProdImage", "Product Image cannot be more than 1 MB!");
+                    //    await LoadAsync(user);
+                    //    return Page();
+                    //}
 
                     path = Path.Combine(path, img_file.FileName); 
 
