@@ -338,35 +338,28 @@
 		});
 	</script>
 </body>
-@* <script>
-	$(document).ready(function () {
-		$("#applyCouponForm").submit(function (event) {
-			event.preventDefault();
-			var couponCode = $("#c_code").val();
-			$.ajax({
-				type: "POST",
-				url: '@Url.Action("ApplyCoupon", "Checkout")',
-				data: { CouponCode: couponCode },
-				success: function (response) {
-					$("#orderTotal").text('$' + response.total);
-				},
-				error: function (xhr, textStatus, errorThrown) {
-					console.log("Error: " + errorThrown);
-				}
-			});
-		});
-	});
-</script> *@
+<!-- Your existing HTML code -->
+
+<div id="couponAlert" class="alert alert-success" style="display: none;" role="alert">
+	Coupon applied successfully! Your new total is: <span id="newTotal"></span>
+</div>
+
+<!-- مثال لإضافة التعليمات البرمجية في الصفحة الخاصة بك -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 	$(document).ready(function () {
-		$("#applyCouponForm").submit(function (event) {
-			event.preventDefault();
+		// استدعاء الإجراء عند تقديم نموذج الكوبون
+		$("#c_code").change(function () {
+			applyCoupon();
+		});
+
+		// دالة لتطبيق الكوبون
+		function applyCoupon() {
 			var couponCode = $("#c_code").val();
 			$.ajax({
 				type: "POST",
 				url: '@Url.Action("ApplyCoupon", "Checkout")',
-				data: { CouponCode: couponCode },
+				data: { couponCode: couponCode },
 				success: function (response) {
 					// تحديث الإجمالي بالقيمة الجديدة من الاستجابة
 					$("#orderTotal").text('$' + response.total);
@@ -375,7 +368,7 @@
 					console.log("Error: " + errorThrown);
 				}
 			});
-		});
+		}
 	});
 </script>
 
