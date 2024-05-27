@@ -7,7 +7,7 @@
 
 <h3>@ViewData["Title"]</h3>
 <partial name="_StatusMessage" for="StatusMessage" />
-<form id="profile-form" method="post" enctype="multipart/form-data">
+<form id="profile-form" method="post" enctype="multipart/form-data" onsubmit="return validateFile()">
 <div class="row">
     <div class="col-md-6">
         @* <form id="profile-form" method="post"> *@
@@ -51,11 +51,15 @@
                 }
             <div class="custom-file mt-2">
                 <input type="file"
-                       accept="image/*"
+@*                        accept="image/*"
+ *@                       accept=".jpg,.jpeg,.png,.gif"
                        asp-for="Input.Cus_ImageUrl"
+                       id="img_file"
+                       name="img_file"
                        class="custome-file-input"
                        onchange="document.getElementById('profilepicture').src=window.URL.createObjectURL(this.files[0])" />
 
+                    <span asp-validation-summary="All" class="text-danger"></span>
 @*                 <label class="custom-file-label" asp-for="Input.Cus_ImageUrl">Choose picture...</label>
  *@                <span asp-validation-for="Input.Cus_ImageUrl" class="text-danger"></span>
             </div>
@@ -66,4 +70,20 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        function validateFile() {
+            const input = document.getElementById('img_file');
+            const allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif'];
+            const fileName = input.value;
+            const fileExtension = fileName.substring(fileName.lastIndexOf('.')).toLowerCase();
+
+            if (!allowedExtensions.includes(fileExtension)) {
+                alert('Invalid file type. Only JPG, JPEG, PNG, and GIF files are allowed.');
+                input.value = ''; // Clear the invalid file input
+                return false;
+            }
+            return true;
+        }
+    </script>
 }

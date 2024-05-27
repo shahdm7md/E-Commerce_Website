@@ -83,6 +83,9 @@
         </div>
         </div>
 </section>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
     <script>
@@ -96,6 +99,17 @@
 
                 posterContainer.removeClass('d-none');
                 posterContainer.find('img').attr('src', image);
+
+                $('form').submit(function () {
+                    $('#alertMessage').removeClass('d-none');
+                });
+            });
+            $('form').submit(function () {
+                $('#alertMessage').removeClass('d-none');
+                // Hide the alert message after 3 seconds (3000 milliseconds)
+                setTimeout(function () {
+                    $('#alertMessage').addClass('d-none');
+                }, 3000);
             });
 
         });
