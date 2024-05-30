@@ -373,7 +373,6 @@
 					data: { couponCode: couponCode },
 					success: function (response) {
 						if (response.success) {
-							// تحديث النص ليكون جريء وبالأرقام العشرية
 							$("#orderTotal1").html('<strong>$' + response.total.toFixed(2) + '</strong>');
 							$("#couponAlert").show().find("#newTotal").text('$' + response.total.toFixed(2));
 						} else {
