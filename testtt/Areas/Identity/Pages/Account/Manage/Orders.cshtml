@@ -1,0 +1,77 @@
+﻿@page
+@model testtt.Areas.Identity.Pages.Account.Manage.OrdersModel
+@{
+    ViewData["Title"] = "Your Orders";
+    ViewData["ActivePage"] = ManageNavPages.Orders;
+}
+
+<h3>@ViewData["Title"]</h3>
+<partial name="_StatusMessage" for="StatusMessage" />
+
+@* <head>
+
+    <link href="~/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="~/css/tiny-slider.css" rel="stylesheet">
+    <link href="~/css/style.css" rel="stylesheet">
+</head> *@
+@* <style>
+    /* توسيط المحتوى داخل العمود */
+    .content {
+        display: flex;
+        justify-content: center; /* توسيط المحتوى أفقيًا */
+        align-items: center; /* توسيط المحتوى عموديًا */
+    }
+</style>
+<style>
+    /* Ensure the table fits within the content area */
+    .table-responsive {
+        overflow-x: auto;
+    }
+</style> *@
+
+@* <div class="container">
+    <div class="row"> *@
+        @* <div class="col-md-3">
+            <!-- Navigation Menu -->
+            <partial name="_ManageNav" />
+        </div> *@
+<form id="profile-form" method="post" enctype="multipart/form-data" onsubmit="return ">
+    <div class="row">
+            <div class="col-md-9">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Order Date</th>
+                                <th>Total Amount</th>
+                                <th>Shipping Address</th>
+                                <th>Customer ID</th>
+                                <th>Order Status</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var order in Model.Orders)
+                            {
+                                <tr>
+                                    <td>@order.Order_ID</td>
+                                    <td>@order.Order_date.ToString("yyyy-MM-dd")</td>
+                                    <td>@order.Total_amount</td>
+                                    <td>@order.Shipping_address</td>
+                                    <td>@order.Customer?.Id</td>
+                                    <td>@order.Order_Status</td>
+                                    <td>
+                                        <a asp-page="./OrderDetails" asp-route-id="@order.Order_ID">View Details</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+    </div>
+</form>
+@*     </div>
+</div> *@
