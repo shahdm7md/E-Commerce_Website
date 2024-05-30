@@ -17,6 +17,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+builder.Services.AddRazorPages();
 builder.Services.AddIdentity<Customer, IdentityRole>()  //Options=> Options.SignIn.RequireConfirmedAccount=true
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultUI()
@@ -60,6 +61,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapRazorPages();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

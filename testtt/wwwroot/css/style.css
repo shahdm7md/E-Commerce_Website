@@ -16,7 +16,7 @@
 }
 
 .hero-img-wrap {
-    animation: moveFromLeft 1s forwards; /* Adjust animation duration as needed */
+    animation: moveFromLeft 2s forwards; /* Adjust animation duration as needed */
 }
 
 body {
@@ -177,7 +177,8 @@ a {
 }
 
 .move-up {
-    margin-top: -50px; /* Adjust this value as needed to move content up */
+    margin-top: -40px; /* Adjust this value as needed to move content up */
+    margin-right: 60px ;
 }
 
 
